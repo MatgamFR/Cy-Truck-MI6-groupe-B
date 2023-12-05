@@ -1,5 +1,7 @@
 #!/bin/bash
 
+##count ime
+debut=$(date +%s)
 if [ $# -lt 1 ]
 then
 	echo "Error don't have any argument'"
@@ -38,6 +40,7 @@ do
 	esac
 done
 
+
 if [ $help -eq 1 ]
 then
 	clear_terminal
@@ -49,3 +52,9 @@ then
 	clear_terminal
 	echo "ça arrive bientot tkt"
 fi
+fin=$(date +%s)
+duree=$(( $fin -$debut ))
+
+
+##display script time
+echo -e "$duree secondes"
