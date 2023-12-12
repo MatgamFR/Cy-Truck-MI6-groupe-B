@@ -95,7 +95,6 @@ then
 	echo "-h displays help menu"
 	echo -en "${enGras}Press [Enter] to continue${enDefaut}"
 	read -p ""
-	echo "puteuhg"
 fi
 
 if [ $d1 -eq 1 ]
