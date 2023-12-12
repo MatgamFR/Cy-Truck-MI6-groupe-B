@@ -70,7 +70,6 @@ help=0
 d1=0
 d2=0
 l=0
-t=0
 s=0
 
 for i in `seq 2 $#`
@@ -104,17 +103,13 @@ fi
 
 if [ $l -eq 1 ]
 then
-	sort -t';' -n -k1 -k2 data.csv | head -n5000 > datatest2.csv
-	cat datatest2.csv
+	sort -t';' -n -k1 -k2 $1 | head -n10 | LC_NUMERIC="C" awk -F';' -W sprintf=num '{sum += $5}END{print sum}'> temp1.csv
+	#sort -t';' -n -k1 -k2 $1 | cut -f5 -d';' | head -n10 > temp2.csv
+	cat temp1.csv
 	#sort -t';' -r  -n -k5 data.csv | head -n10 > 10long.csv
 	#cat 10long.csv
 fi
 
-for i in `seq 3 $#`
-do
-
-
-done
 
 fin=$(date +%s)
 duree=$(( $fin -$debut ))
