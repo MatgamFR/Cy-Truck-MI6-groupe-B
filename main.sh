@@ -1,7 +1,12 @@
 #!/bin/bash
 
-##count ime
+##count time
 debut=$(date +%s)
+
+#with and height terminal
+width=$(tput cols)
+height=$(tput lines)
+
 if [ $# -lt 1 ]
 then
 	echo "Error don't have any argument'"
@@ -65,6 +70,13 @@ initialiser_variables () {
 	bool_show_freq=false # bool_show_freq=true
 
 } # fin de initialiser_variables
+
+create_space () {
+	for i in `seq 0 $n`
+	do
+		echo -n " "
+	done
+}
 	
 help=0
 d1=0
@@ -89,10 +101,38 @@ done
 clear_terminal
 initialiser_variables
 
+
 if [ $help -eq 1 ]
 then
+	n=$(echo "($width - 9)/2" | bc)
+	create_space 
+	echo -e "${enGras}${enRouge}Help Menu${enDefaut}"
+	n=$(echo "($width - 67)/2" | bc)
+	create_space
+	echo -e "${enGras}${enVert}                    _________________________________________________"
+    create_space 
+    echo "            /|     |                                                 |"
+    create_space 
+    echo "            ||     |                                                 |"
+    create_space 
+    echo -e "       .----|-----,|                     ${enDefaut}CY-TRUCK${enGras}${enVert}                    |"
+    create_space 
+    echo "       ||  ||   ==||                                                 |"
+    create_space 
+    echo "  .-----'--'|   ==||                                                 |"
+    create_space 
+    echo "  |)-      ~|     ||_________________________________________________|"
+    create_space 
+    echo "  | ___     |     |____...==..._  >\______________________________|"
+    create_space 
+    echo " [_/.-.\'--'-------- //.-.  .-.\\\/   |/            \\\ .-.  .-. //"
+    create_space 
+    echo "   ( o )'===''''''''''( o )( o )     o              '( o )( o )'"
+    create_space 
+    echo -e "    '-'                '-'  '-'                       '-'  '-'${enDefaut}"
+    echo
 	echo "-h displays help menu"
-	echo -en "${enGras}Press [Enter] to continue${enDefaut}"
+	echo -e "${enGras}Press [Enter] to continue${enDefaut}"
 	read -p ""
 fi
 
