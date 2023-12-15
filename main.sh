@@ -143,9 +143,14 @@ fi
 
 if [ $l -eq 1 ]
 then
-	sort -t';' -n -k1 -k2 $1 | head -n10 | LC_NUMERIC="C" awk -F';' -W sprintf=num '{sum += $5}END{print sum}'> temp1.csv
-	#sort -t';' -n -k1 -k2 $1 | cut -f5 -d';' | head -n10 > temp2.csv
-	cat temp1.csv
+	#sort -t';' -n -k1 -k2 $1 | head -n10 | LC_NUMERIC="C" awk -F';' -W sprintf=num '{sum += $5}END{print sum}'> temp1.csv
+	
+	#En une ligne : sort -t';' -n -k1 -k2 $1 | LC_NUMERIC="C" awk -F';' -W sprintf=num 'BEGIN {a=0; sum=0} {if(a!=$1){print sum ";" $6; a++; sum=0} else {sum+=$5}}' | sort -t';' -n -r -k1 | head -10
+	
+	sort -t';' -n -k1 -k2 $1 > temp1.csv
+	LC_NUMERIC="C" awk -F';' -W sprintf=num 'BEGIN {a=0; sum=0} {if(a!=$1){print sum ";" $6; a++; sum=0} else {sum+=$5}}' temp1.csv | sort -t';' -n -r -k1 > temp2.csv
+	head -10 temp2.csv
+	
 	#sort -t';' -r  -n -k5 data.csv | head -n10 > 10long.csv
 	#cat 10long.csv
 fi
