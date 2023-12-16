@@ -1,8 +1,7 @@
-set terminal pdf
-set output "asi.pdf"
+set terminal pdf font "Arial,11"
+set output "images/l.pdf"
 set title "Histogramme"
 set style data histogram
 set style fill solid
 set style histogram clustered
 plot for [COL=2:2] "temp/temp1.data" using COL:xtic(1) title "Distance"
-
