@@ -145,8 +145,9 @@ if [ $l -eq 1 ]
 then
 	#sort -t';' -n -k1 -k2 $1 | head -n10 | LC_NUMERIC="C" awk -F';' -W sprintf=num '{sum += $5}END{print sum}'> temp1.csv
 	
-	sort -t';' -n -k1 $1 | LC_NUMERIC="C" awk -F';' -W sprintf=num 'BEGIN {a=$1; sum=0} {if(a!=$1){print sum ";" a; a=$1; sum=$5} else {sum+=$5}}' | sort -t';' -n -r -k1 | head -10  > temp/temp1.csv
-	cat temp/temp1.csv
+	sort -t';' -n -k1 $1 | LC_NUMERIC="C" awk -F';' -W sprintf=num 'BEGIN {a=$1; sum=0} {if(a!=$1){print a " " sum; a=$1; sum=$5} else {sum+=$5}}' | sort -t' ' -n -r -k2 | head -10  > temp/temp1.data
+	
+	gnuplot hist.txt
 	
 	#sort -t';' -r  -n -k5 data.csv | head -n10 > 10long.csv
 	#cat 10long.csv
