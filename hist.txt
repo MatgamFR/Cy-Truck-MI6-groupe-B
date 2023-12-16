@@ -4,4 +4,4 @@ set title "Histogramme"
 set style data histogram
 set style fill solid
 set style histogram clustered
-plot for [COL=2:2] "temp/temp1.data" using COL:xtic(1) title "Distance" lc rgb "blue"
+plot "temp/temp1.data" using 2:xtic(1) title "Distance" lc rgb "blue"
