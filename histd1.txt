@@ -1,0 +1,9 @@
+set terminal pdfcairo font "Arial,8"
+set output "images/d1.pdf"
+set title "Histogramme"
+set style data histogram
+set style fill solid
+set style histogram clustered
+set xtics rotate by 90 offset -1,-1  # Rotation des étiquettes à 90 degrés vers la droite
+plot "temp/temp2.data" using 3:xticlabels(sprintf("%s %s", stringcolumn(1), stringcolumn(2))) title "Le plus de trajets" lc rgb "blue"
+
