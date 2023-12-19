@@ -138,18 +138,25 @@ fi
 
 if [ $d1 -eq 1 ]
 then
-	#sort -t';' -d -k6 > temp/temp2.data
-	grep ";1;" $1 | sort -t';' -k6 | awk -F';' -W sprintf=num 'BEGIN {a=$6; sum=0} {if(a!=$6){print a " " sum; a=$6; sum=1} else {sum+=1}}' | sort -t' ' -n -r -k3 | head -10  > temp/temp2.data
-	gnuplot histd1.txt
+	echo "ça arrive bientot tkt"
 fi
+
+if [ $d2 -eq 1 ]
+then
+	LC_NUMERIC="C" awk -F';' -W sprintf=num ' {count[$6]+=$5} END {for(i in count){print i, count[i]}}' $1 | sort -t' ' -n -r -k3 | head -10  > temp/tempd2.data
+	
+	gnuplot hist2.txt
+	convert -rotate 90 images/d2.png images/d2final.png
+fi
+
 
 if [ $l -eq 1 ]
 then
 	#sort -t';' -n -k1 -k2 $1 | head -n10 | LC_NUMERIC="C" awk -F';' -W sprintf=num '{sum += $5}END{print sum}'> temp1.csv
 	
-	sort -t';' -n -k1 $1 | LC_NUMERIC="C" awk -F';' -W sprintf=num 'BEGIN {a=$1; sum=0} {if(a!=$1){print a " " sum; a=$1; sum=$5} else {sum+=$5}}' | sort -t' ' -n -r -k2 | head -10 | sort -t' ' -n -k1 > temp/temp1.data
+	sort -t';' -n -k1 $1 | LC_NUMERIC="C" awk -F';' -W sprintf=num 'BEGIN {a=$1; sum=0} {if(a!=$1){print a " " sum; a=$1; sum=$5} else {sum+=$5}}' | sort -t' ' -n -r -k2 | head -10  > temp/temp1.data
 	
-	gnuplot hist.txt
+	#gnuplot hist.txt
 	
 	#sort -t';' -r  -n -k5 data.csv | head -n10 > 10long.csv
 	#cat 10long.csv
