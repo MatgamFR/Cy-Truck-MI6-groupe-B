@@ -1,7 +1,9 @@
-set terminal png font "Arial,11"
+set terminal png font "Arial,9"
 set output 'images/d2.png'
 set title "Histogramme horizontal"
 set style data histogram
 set style fill solid
 set style histogram clustered
-plot "temp/tempd2.data" using 2:xtic(1) title "Distance" lc rgb "blue"
+set xtics rotate by -270
+set ytics rotate by -270
+plot "temp/tempd2.data" using 3:xticlabels(sprintf("%s %s", stringcolumn(1), stringcolumn(2))) title "Distance en m" lc rgb "blue"
