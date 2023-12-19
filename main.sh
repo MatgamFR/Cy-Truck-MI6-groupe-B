@@ -153,6 +153,15 @@ then
 	#cat 10long.csv
 fi
 
+if [ $d2 -eq 1 ]
+then
+	sort -t';' -n -k1 $1 | LC_NUMERIC="C" awk -F';' -W sprintf=num 'BEGIN {a=$1; sum=0} {if(a!=$1){print a " " sum; a=$1; sum=$5} else {sum+=$5}}' | sort -t' ' -n -r -k2 | head -10  > temp/tempd2.data
+	
+	gnuplot hist2.txt
+	convert -rotate 90 images/d2.png images/d2final.png
+ 	#voir les attendus
+fi
+
 
 fin=$(date +%s)
 duree=$(( $fin -$debut ))
