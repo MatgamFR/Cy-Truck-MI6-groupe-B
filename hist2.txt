@@ -6,4 +6,5 @@ set style fill solid
 set style histogram clustered
 set xtics rotate by -270
 set ytics rotate by -270
+set bmargin 13
 plot "temp/tempd2.data" using 3:xticlabels(sprintf("%s %s", stringcolumn(1), stringcolumn(2))) title "Distance en m" lc rgb "blue"
