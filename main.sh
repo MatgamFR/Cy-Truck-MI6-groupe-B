@@ -139,30 +139,58 @@ fi
 if [ $d1 -eq 1 ]
 then
 	#sort -t';' -d -k6 > temp/temp2.data
-	grep ";1;" $1 | awk -F';' -W sprintf=num '{count[$6]++} END {for(i in count){print i, count[i]}}' | sort -t' ' -n -r -k3 | head -10  > temp/temp2.data
+	grep ";1;" $1 | awk -F';' -W sprintf=num '{count[$6]++} END {for(i in count){printf("%s;%d\n", i, count[i])}}' | sort -t';' -n -r -k2 | head -10  > temp/tempd1.data
 	
 	gnuplot histd1.txt
 	convert -rotate 90 images/d1.png images/d1.png
+	
+	xdg-open images/d1.png
 fi
 
 if [ $d2 -eq 1 ]
 then
-	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$6]+=$5} END {for(i in count){print i, count[i]}}' $1 | sort -t' ' -n -r -k3 | head -10  > temp/tempd2.data
+	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$6]+=$5} END {for(i in count){printf("%s;%f\n", i, count[i])}}' $1 | sort -t';' -r -n -k2 | head -10  > temp/tempd2.data
 	
 	gnuplot histd2.txt
 	convert -rotate 90 images/d2.png images/d2.png
+	
+	xdg-open images/d2.png
 fi
 
 if [ $l -eq 1 ]
 then
 	#sort -t';' -n -k1 -k2 $1 | head -n10 | LC_NUMERIC="C" awk -F';' -W sprintf=num '{sum += $5}END{print sum}'> temp1.csv
 	
-	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$1]+=$5} END {for(i in count){print i, count[i]}}' $1 | sort -t' ' -r -n -k2 | head -10 | sort -t' ' -r -n -k1 > temp/temp1.data
+	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$1]+=$5} END {for(i in count){printf("%d;%f\n", i, count[i])}}' $1 | sort -t';' -r -n -k2 | head -10 | sort -t' ' -r -n -k1 > temp/templ.data
 	
 	gnuplot hist.txt
 	
+	xdg-open images/l.pdf
+	
 	#sort -t';' -r  -n -k5 data.csv | head -n10 > 10long.csv
 	#cat 10long.csv
+fi
+
+
+if [ $t -eq 1 ]
+then
+	#Un awk avec un calcul un peu bizarre mais qui donne le meme resultat que le prof, en gros on fait 3 tableau avec qui on compte +1 pour chaque ville dans la colonne 3 et 4 et que quand l'élément de la colonne 1 est égale à 1 on rajoute +1 au tableau 3, après on prend la valeur absolu entre la difference du tableau 1 et 2 (à revoir pour voir si on peut optimiser ou l'enver)
+	awk -F';' -W sprintf=num '{count[$3]++; count2[$4]++; if($2 == 1){count3[$3]++}} END {for(i in count){a=count[i]-count2[i]; (a < 0) ? -a : a; printf("%s;%d;%d\n", i, count[i]-a+count3[i], count3[i])}}' $1 > temp/temps.data
+	
+	#Une ligne permettant de compter le nombre de ligne dans temp/temps.data pour permettre de faire la boucle for dans la programme c
+	a=`cat temp/temps.data | wc -l`
+	
+	#des cuts pour séparer la colonne 1 et 2 dans des fichiers differents
+	cut -d';' -f1 temp/temps.data > temp/temps2.data
+	cut -d';' -f2 temp/temps.data > temp/temps3.data
+	
+	#compilation du programme c
+	gcc -o exe progc/avl.c
+	
+	#On lance le programme avec comme argument le nombre de ligne du fichier et les sorties du programme vont dans temp/tempsfini.data
+	./exe $a > temp/tempsfini.data
+	
+	#sort -t' ' -k1 -n -r temp/temps3.data > temp/temps3.data
 fi
 
 

@@ -1,9 +1,10 @@
-set terminal pdf font "Arial,7"
+set terminal pdf font "Arial,6"
 set output "images/l.pdf"
 set title "Histogramme"
 set style data histogram
 set style fill solid
 set style histogram clustered
+set datafile separator ";"
 
 set yrange [0:*]
 set ylabel "Distance (Km)" rotate by -270
@@ -12,4 +13,4 @@ set xlabel "Route ID"
 set size square
 set boxwidth 2 
 
-plot "temp/temp1.data" using 2:xtic(1) notitle lc rgb "blue"
+plot "temp/templ.data" using 2:xtic(1) notitle lc rgb "blue"
