@@ -183,12 +183,15 @@ then
 	#des cuts pour séparer la colonne 1 et 2 dans des fichiers differents
 	cut -d';' -f1 temp/temps.data > temp/temps2.data
 	cut -d';' -f2 temp/temps.data > temp/temps3.data
+	cut -d';' -f3 temp/temps.data > temp/temps4.data
 	
 	#compilation du programme c
 	gcc -o exe progc/avl.c
 	
 	#On lance le programme avec comme argument le nombre de ligne du fichier et les sorties du programme vont dans temp/tempsfini.data
-	./exe $a > temp/tempsfini.data
+	./exe $a | head -10 > temp/tempsfini.data
+	
+	gnuplot hist_t.txt
 	
 	#sort -t' ' -k1 -n -r temp/temps3.data > temp/temps3.data
 fi
