@@ -208,10 +208,10 @@ pAvl suppressionAVL(pAvl myAvl, camion e, int* h){
 
 void parcoursInfixeInverse(pAvl a){
 	if(a!=NULL){
-		voila(a->fd);
+		parcoursInfixeInverse(a->fd);
 		//La ça va print nom_de_la_ville;distance
 		printf("%s;%d\n", (a->val).v2, (a->val).v);
-		voila(a->fg);
+		parcoursInfixeInverse(a->fg);
 	}
 }
 
