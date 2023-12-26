@@ -7,7 +7,7 @@ debut=$(date +%s)
 width=$(tput cols)
 height=$(tput lines)
 
-if [ $# -lt 1 ]
+if [ $# -lt 2 ]
 then
 	echo "Error don't have any argument'"
 	exit 1
@@ -83,6 +83,7 @@ d1=0
 d2=0
 l=0
 s=0
+t=0
 
 for i in `seq 2 $#`
 do
@@ -174,8 +175,8 @@ fi
 
 if [ $t -eq 1 ]
 then
-	#Un awk avec un calcul un peu bizarre mais qui donne le meme resultat que le prof, en gros on fait 3 tableau avec qui on compte +1 pour chaque ville dans la colonne 3 et 4 et que quand l'élément de la colonne 1 est égale à 1 on rajoute +1 au tableau 3, après on prend la valeur absolu entre la difference du tableau 1 et 2 (à revoir pour voir si on peut optimiser ou l'enver)
-	awk -F';' -W sprintf=num '{count[$3]++; count2[$4]++; if($2 == 1){count3[$3]++}} END {for(i in count){a=count[i]-count2[i]; (a < 0) ? -a : a; printf("%s;%d;%d\n", i, count[i]-a+count3[i], count3[i])}}' $1 > temp/temps.data
+	#Un awk optimiser et c'est cool, count compte le nombre de fois ou la ville est la fin trajet et au millieu, count2 compte le nombre de fois ou c'est un début de trajet, donc on aditionne les 2 pour avoir le totale 
+	awk -F';' -W sprintf=num '{count[$4]++; if($2 == 1){count2[$3]++}} END {for(i in count){printf("%s;%d;%d\n", i, count[i]+count2[i], count2[i])}}' $1 > temp/temps.data
 	
 	#Une ligne permettant de compter le nombre de ligne dans temp/temps.data pour permettre de faire la boucle for dans la programme c
 	a=`cat temp/temps.data | wc -l`
@@ -192,6 +193,8 @@ then
 	./exe $a | head -10 > temp/tempsfini.data
 	
 	gnuplot hist_t.txt
+	
+	xdg-open images/t.pdf
 	
 	#sort -t' ' -k1 -n -r temp/temps3.data > temp/temps3.data
 fi
