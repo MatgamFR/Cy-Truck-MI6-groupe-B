@@ -140,7 +140,7 @@ fi
 if [ $d1 -eq 1 ]
 then
 	#sort -t';' -d -k6 > temp/temp2.data
-	grep ";1;" $1 | awk -F';' -W sprintf=num '{count[$6]++} END {for(i in count){printf("%s;%d\n", i, count[i])}}' | sort -t';' -n -r -k2 | head -10  > temp/tempd1.data
+	grep ";1;" $1 | awk -F';' -W sprintf=num '{count[$6]++} END {for(i in count){printf("%s;%d\n", i, count[i])}}' | sort -t';' -n -r -k2,2 | head -10  > temp/tempd1.data
 	
 	gnuplot histd1.txt
 	convert -rotate 90 images/d1.png images/d1.png
@@ -150,7 +150,7 @@ fi
 
 if [ $d2 -eq 1 ]
 then
-	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$6]+=$5} END {for(i in count){printf("%s;%f\n", i, count[i])}}' $1 | sort -t';' -r -n -k2 | head -10  > temp/tempd2.data
+	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$6]+=$5} END {for(i in count){printf("%s;%f\n", i, count[i])}}' $1 | sort -t';' -r -n -k2,2 | head -10  > temp/tempd2.data
 	
 	gnuplot histd2.txt
 	convert -rotate 90 images/d2.png images/d2.png
@@ -162,7 +162,7 @@ if [ $l -eq 1 ]
 then
 	#sort -t';' -n -k1 -k2 $1 | head -n10 | LC_NUMERIC="C" awk -F';' -W sprintf=num '{sum += $5}END{print sum}'> temp1.csv
 	
-	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$1]+=$5} END {for(i in count){printf("%d;%f\n", i, count[i])}}' $1 | sort -t';' -r -n -k2 | head -10 | sort -t' ' -r -n -k1 > temp/templ.data
+	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$1]+=$5} END {for(i in count){printf("%d;%f\n", i, count[i])}}' $1 | sort -t';' -r -n -k2 | head -10 | sort -t' ' -r -n -k1,1 > temp/templ.data
 	
 	gnuplot hist.txt
 	
@@ -197,6 +197,12 @@ then
 	xdg-open images/t.pdf
 	
 	#sort -t' ' -k1 -n -r temp/temps3.data > temp/temps3.data
+fi
+
+
+if [ $s -eq 1 ]
+then
+	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$1]+=$5; countmoy[$1]++; if($5 >= countmax[$1]){countmax[$1]=$5}; if(($5 <= countmin[$1]) || (countmin[$1] == 0)){countmin[$1]=$5}} END {for(i in count){printf("%d;%.3f;%.3f;%.3f;%.3f\n", i, countmin[i], count[i]/countmoy[i], countmax[i], countmax[i]-countmin[i])}}' $1 | sort -t';' -r -g -k5,5 > temp/tempt.data
 fi
 
 
