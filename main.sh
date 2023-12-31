@@ -187,10 +187,12 @@ then
 	cut -d';' -f3 temp/temps.data > temp/temps4.data
 	
 	#compilation du programme c
-	gcc -o exe progc/avl.c
+	cd progc
+	make
+	cd ..
 	
 	#On lance le programme avec comme argument le nombre de ligne du fichier et les sorties du programme vont dans temp/tempsfini.data
-	./exe $a | head -10 > temp/tempsfini.data
+	./progc/cy_truck $a | head -10 > temp/tempsfini.data
 	
 	gnuplot hist_t.txt
 	
