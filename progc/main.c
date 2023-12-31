@@ -66,15 +66,15 @@ int main(int arg, char** argv){
 		
 		fscanf(fichier, "%d;%f;%f;%f;%f", &d, &f, &f2, &f3, &f4);
 		
-		camion2 cam;
+		camion cam;
 		
-		cam.v = f4;
+		cam.v7 = f4;
 		cam.v2 = d;
-		cam.v3 = f;
-		cam.v4 = f2;
-		cam.v5 = f3;
+		cam.v4 = f;
+		cam.v5 = f2;
+		cam.v6 = f3;
 		
-		pAvl2 a=creerArbre2(cam);
+		pAvl a=creerArbre(cam);
 		
 		int nbligne = atoi(argv[1])-1;
 		
@@ -83,13 +83,13 @@ int main(int arg, char** argv){
 			
 			fscanf(fichier, "%d;%f;%f;%f;%f", &d, &f, &f2, &f3, &f4);
 			
-			camion2 cam;
-			
-			cam.v = f4;
+			camion cam;
+		
+			cam.v7 = f4;
 			cam.v2 = d;
-			cam.v3 = f;
-			cam.v4 = f2;
-			cam.v5 = f3;
+			cam.v4 = f;
+			cam.v5 = f2;
+			cam.v6 = f3;
 			
 			insertionAVL2(a, cam, &h);
 		}
