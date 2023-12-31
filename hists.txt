@@ -1,0 +1,13 @@
+set terminal pdf font "Arial,6"
+set output "images/s.pdf"
+set title "Histogramme"
+set style data lines
+set style fill solid 0.5
+set datafile separator ";"
+
+set xrange [1:*]
+set xtic rotate by 45 right
+set xlabel "Route ID"
+set ylabel "Distance (Km)" rotate by -270
+
+plot "temp/temptfini.data" using 1:3:5:xtic(2) with filledcurves below title "Distance Max/Min (Km)" lc rgb "blue", '' u 1:4 lc rgb "blue" title "Distance Average (Km)"

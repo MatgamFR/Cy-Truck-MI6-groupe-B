@@ -1,7 +1,7 @@
 set terminal png font "Arial,7.5"
 set output 'images/d2.png'
 set style data histogram
-set style fill solid
+set style fill solid 0.5
 set style histogram clustered
 set xtics rotate by -270
 set y2tics rotate by -270

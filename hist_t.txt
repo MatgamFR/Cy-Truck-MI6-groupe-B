@@ -1,16 +1,17 @@
-set terminal pdf font "Arial,6"
+set terminal pdf font "Arial,6" lw 0
 set output "images/t.pdf"
 set title "Histogramme"
 set style data histogram
-set style fill solid
+set style fill solid 0.5
 set style histogram clustered
 set datafile separator ";"
+set bmargin 13
 
 set ylabel "Nb Routes" rotate by -270
 set xlabel "Town Names"
-set xtic rotate by -45
+set xtic rotate by 45 right
 
 set size square
-set boxwidth 2 
+set boxwidth 2
 
-plot for [COL=2:3] "temp/tempsfini.data" using COL:xtic(1) notitle
+plot "temp/tempsfini.data" using 2:xtic(1) notitle lc rgb "blue", '' using 3:xtic(1) lc rgb "green" notitle

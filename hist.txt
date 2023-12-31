@@ -2,7 +2,7 @@ set terminal pdf font "Arial,6"
 set output "images/l.pdf"
 set title "Histogramme"
 set style data histogram
-set style fill solid
+set style fill solid 0.5
 set style histogram clustered
 set datafile separator ";"
 
