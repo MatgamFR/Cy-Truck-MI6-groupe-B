@@ -56,8 +56,10 @@ int main(int arg, char** argv){
 		parcoursInfixeInverse(a);
 	}
 	else{
-		FILE * fichier = fopen("temp/tempt.data", "r");
-
+		traitement_s(atoi(argv[1]), atoi(argv[2]));
+		
+		/*FILE * fichier = fopen("temp/tempt.data", "r");
+		
 		int d;
 		float f;
 		float f2;
@@ -65,6 +67,8 @@ int main(int arg, char** argv){
 		float f4;
 		
 		fscanf(fichier, "%d;%f;%f;%f;%f", &d, &f, &f2, &f3, &f4);
+		
+		printf("%d %f\n", d, f);
 		
 		camion cam;
 		
@@ -80,8 +84,8 @@ int main(int arg, char** argv){
 		
 		for(int i=0; i<nbligne; i++){
 			int h=0;
-			
 			fscanf(fichier, "%d;%f;%f;%f;%f", &d, &f, &f2, &f3, &f4);
+			//printf("%d %f\n", d, f);
 			
 			camion cam;
 		
@@ -94,7 +98,7 @@ int main(int arg, char** argv){
 			insertionAVL2(a, cam, &h);
 		}
 		//On fait le parcours infixe mais inverse
-		parcoursInfixeInverse2(a);
+		parcoursInfixeInverse2(a);*/
 	}
 	
 	return 0;

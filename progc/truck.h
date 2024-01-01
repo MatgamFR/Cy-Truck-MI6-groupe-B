@@ -21,6 +21,13 @@ typedef struct Avl{
     struct Avl* fd;
 }Avl,*pAvl;
 
+typedef struct Truc{
+	float max;
+	float min;
+	float moy;
+	int compt;
+} truc;
+
 pAvl creerArbre(camion num);
 pAvl rotationGauche(pAvl myAvl);
 pAvl rotationDroite(pAvl myAvl);
@@ -32,3 +39,5 @@ void parcoursInfixeInverse(pAvl a);
 
 pAvl insertionAVL2(pAvl myAvl, camion e, int* h);
 void parcoursInfixeInverse2(pAvl a);
+
+void traitement_s(int nbligne, int a);
