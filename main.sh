@@ -204,15 +204,20 @@ fi
 
 if [ $s -eq 1 ]
 then
-	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$1]+=$5; countmoy[$1]++; if($5 >= countmax[$1]){countmax[$1]=$5}; if(($5 <= countmin[$1]) || (countmin[$1] == 0)){countmin[$1]=$5}} END {for(i in count){printf("%d;%.3f;%.3f;%.3f;%.3f\n", i, countmin[i], count[i]/countmoy[i], countmax[i], countmax[i]-countmin[i])}}' $1 > temp/tempt.data
+	cut -d';' -f1,5 $1 | tail -n +2 > temp/tempt.data
+	
+	#LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$1]+=$5; countmoy[$1]++; if($5 >= countmax[$1]){countmax[$1]=$5}; if(($5 <= countmin[$1]) || (countmin[$1] == 0)){countmin[$1]=$5}} END {for(i in count){printf("%d;%.3f;%.3f;%.3f;%.3f\n", i, countmin[i], count[i]/countmoy[i], countmax[i], countmax[i]-countmin[i])}}' $1 > temp/tempt.data
+	
 	
 	a=`cat temp/tempt.data | wc -l`
+	b=`cat $1 | grep ";1;" | awk -F';' '{if($1 >= max){max = $1}} END {print max}'`
+	#b=`cat $1 | grep ";1;" | wc -l`
 	
 	cd progc
 	make
 	cd ..
 	
-	./progc/cy_truck $a 1 | head -50 | awk -W sprintf=num '{x++; printf("%d;%s\n", x, $1)}'> temp/temptfini.data
+	./progc/cy_truck $a $b | head -50 | awk -W sprintf=num '{x++; printf("%d;%s\n", x, $1)}' > temp/temptfini.data
 	
 	gnuplot hists.txt
 	
