@@ -196,7 +196,7 @@ then
 	cd ..
 	
 	#On lance le programme avec comme argument le nombre de ligne du fichier et les sorties du programme vont dans temp/tempsfini.data
-	./progc/cy_truck $a | head -10 | sort -t';' -d -k1 > temp/tempsfini.data
+	./progc/cy_truck $a | head -10 > temp/tempsfini.data
 	
 	gnuplot hist_t.txt
 	
