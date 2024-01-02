@@ -3,6 +3,10 @@
 ##count time
 debut=$(date +%s)
 
+#copy data.csv n move it to data's folder
+script_dir=$(dirname "$(readlink -f "$0")")
+cp "$script_dir/data.csv" "$script_dir/data/"
+
 #with and height terminal
 width=$(tput cols)
 height=$(tput lines)
