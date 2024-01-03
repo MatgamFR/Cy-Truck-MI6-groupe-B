@@ -5,7 +5,7 @@ debut=$(date +%s)
 
 #copy data.csv n move it to data's folder
 script_dir=$(dirname "$(readlink -f "$0")")
-cp "$script_dir/data.csv" "$script_dir/data/"
+cp "$script_dir/$1" "$script_dir/data/"
 
 #with and height terminal
 width=$(tput cols)
@@ -136,7 +136,12 @@ then
     create_space 
     echo -e "    '-'                '-'  '-'                       '-'  '-'${enDefaut}"
     echo
-	echo "-h displays help menu"
+	echo "-h | displays help menu"
+	echo "-d1 | creates a graph with the 10 drivers who have made the most trips, sorted by descending order"
+	echo "-d2 | creates a graph with the 10 drivers who traveled the longest distance, sorted by descending order"
+	echo "-l | creates a graph with the 10 longest trips, sorted by ascending trip ID number"
+	echo "-t | creates a graph the 10 most crossed cities, the first vertical bar is the total number of trips who pass through this city and the second vertical bar is the number of time where this city has been the departure city, sorted by alphabetical order"
+	echo "-s | creates  a graph with the minimum, maximum, and average distance of the steps for 50 trips who have the biggest gap in the distance of their steps, sorted by descending order"
 	echo -e "${enGras}Press [Enter] to continue${enDefaut}"
 	read -p ""
 fi
