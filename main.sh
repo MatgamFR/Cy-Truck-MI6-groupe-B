@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##count time
-debut=$(date +%s)
+beginning=$(date +%s)
 
 #copy data.csv n move it to data's folder
 script_dir=$(dirname "$(readlink -f "$0")")
@@ -31,33 +31,33 @@ clear_terminal () {
 initialiser_variables () {
 	# COULEURS
 
-	fdNoir='\033[40m'
-	fdRouge='\033[41m'
-	fdVert='\033[42m'
-	fdJaune='\033[43m'
-	fdBleu='\033[44m'
-	fdRose='\033[45m'
+	fdBlack='\033[40m'
+	fdRed='\033[41m'
+	fdGreen='\033[42m'
+	fdYellow='\033[43m'
+	fdBlue='\033[44m'
+	fdPink='\033[45m'
 	fdCyan='\033[46m'
-	fdGris='\033[47m'
-	# fdDefaut='\033[49m'
+	fdGrey='\033[47m'
+	# fdDefault='\033[49m'
 
-	enNoir='\033[30m'
-	enRouge='\033[31m'
-	enVert='\033[32m'
-	enJaune='\033[33m'
+	enBlack='\033[30m'
+	enRed='\033[31m'
+	enGreen='\033[32m'
+	enYellow='\033[33m'
 	enBleu='\033[34m'
-	enRose='\033[35m'
+	enPink='\033[35m'
 	enCyan='\033[36m'
-	enGris='\033[37m'
-	# enDefaut='\033[39m'
+	enGrey='\033[37m'
+	# enDefault='\033[39m'
 
-	enGras='\033[1m'
-	enSouligner='\033[4m'
-	enClignotant='\033[5m'
-	enSurligner='\033[7m'
-	enCache='\033[8m'
+	enBold='\033[1m'
+	enUnderline='\033[4m'
+	enBlinkers='\033[5m'
+	enHighlight='\033[7m'
+	enHidden='\033[8m'
 
-	enDefaut='\033[0m'
+	enDefault='\033[0m'
 
 	# GENERALES
 	nbre_radios=0
@@ -67,8 +67,8 @@ initialiser_variables () {
 	# sous_recherche=" "
 	fichier_log=""
 
-	tete_de_page=""
-	pied_de_page=""
+	header=""
+	footer=""
 
 	# affiche les fréquences ou non
 	bool_show_freq=false # bool_show_freq=true
@@ -111,16 +111,16 @@ if [ $help -eq 1 ]
 then
 	n=$(echo "($width - 9)/2" | bc)
 	create_space 
-	echo -e "${enGras}${enRouge}Help Menu${enDefaut}"
+	echo -e "${enBold}${enRed}Help Menu${enDefault}"
 	n=$(echo "($width - 67)/2" | bc)
 	create_space
-	echo -e "${enGras}${enVert}                    _________________________________________________"
+	echo -e "${enBold}${enGreen}                    _________________________________________________"
     create_space 
     echo "            /|     |                                                 |"
     create_space 
     echo "            ||     |                                                 |"
     create_space 
-    echo -e "       .----|-----,|                     ${enDefaut}CY-TRUCK${enGras}${enVert}                    |"
+    echo -e "       .----|-----,|                     ${enDefault}CY-TRUCK${enBold}${enGreen}                    |"
     create_space 
     echo "       ||  ||   ==||                                                 |"
     create_space 
@@ -134,7 +134,7 @@ then
     create_space 
     echo "   ( o )'===''''''''''( o )( o )     o              '( o )( o )'"
     create_space 
-    echo -e "    '-'                '-'  '-'                       '-'  '-'${enDefaut}"
+    echo -e "    '-'                '-'  '-'                       '-'  '-'${enDefault}"
     echo
 	echo "-h | displays help menu"
 	echo "-d1 | creates a graph with the 10 drivers who have made the most trips, sorted by descending order"
@@ -142,7 +142,7 @@ then
 	echo "-l | creates a graph with the 10 longest trips, sorted by ascending trip ID number"
 	echo "-t | creates a graph the 10 most crossed cities, the first vertical bar is the total number of trips who pass through this city and the second vertical bar is the number of time where this city has been the departure city, sorted by alphabetical order"
 	echo "-s | creates  a graph with the minimum, maximum, and average distance of the steps for 50 trips who have the biggest gap in the distance of their steps, sorted by descending order"
-	echo -e "${enGras}Press [Enter] to continue${enDefaut}"
+	echo -e "${enBold}Press [Enter] to continue${enBold}"
 	read -p ""
 fi
 
@@ -234,9 +234,9 @@ then
 fi
 
 
-fin=$(date +%s)
-duree=$(( $fin -$debut ))
+end=$(date +%s)
+duration=$(( $end -$beginning ))
 
 
 ##display script time
-echo -e "$duree secondes"
+echo -e "$duration secondes"
