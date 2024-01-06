@@ -1,5 +1,5 @@
-set terminal pdf font "Arial,6"
-set output "images/s.pdf"
+set terminal png font "Arial,6"
+set output "images/s.png"
 set title "Histogramme"
 set style data lines
 set style fill solid 0.5
