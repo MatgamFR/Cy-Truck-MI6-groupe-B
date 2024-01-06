@@ -175,7 +175,7 @@ then
 	
 	gnuplot hist.txt
 	
-	xdg-open images/l.pdf
+	xdg-open images/l.png
 	
 	#sort -t';' -r  -n -k5 data.csv | head -n10 > 10long.csv
 	#cat 10long.csv
@@ -205,7 +205,7 @@ then
 	
 	gnuplot hist_t.txt
 	
-	xdg-open images/t.pdf
+	xdg-open images/t.png
 	
 	#sort -t' ' -k1 -n -r temp/temps3.data > temp/temps3.data
 fi
@@ -230,7 +230,7 @@ then
 	
 	gnuplot hists.txt
 	
-	xdg-open images/s.pdf
+	xdg-open images/s.png
 fi
 
 
