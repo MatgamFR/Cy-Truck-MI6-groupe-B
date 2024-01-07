@@ -185,7 +185,7 @@ fi
 if [ $t -eq 1 ]
 then
 	#Un awk optimiser et c'est cool, count compte le nombre de fois ou la ville est la fin trajet et au millieu, count2 compte le nombre de fois ou c'est un début de trajet, donc on aditionne les 2 pour avoir le totale 
-	awk -F';' -W sprintf=num '{count[$4]++; if($2 == 1){count2[$3]++}} END {for(i in count){printf("%s;%d;%d\n", i, count[i]+count2[i], count2[i])}}' $1 > temp/temps.data
+	awk -F';' -W sprintf=num '{if($3 != $4){count[$4]++}; if($2 == 1){count2[$3]++}} END {for(i in count){printf("%s;%d;%d\n", i, count[i]+count2[i], count2[i])}}' $1 > temp/temps.data
 	
 	#Une ligne permettant de compter le nombre de ligne dans temp/temps.data pour permettre de faire la boucle for dans la programme c
 	a=`cat temp/temps.data | wc -l`
@@ -237,6 +237,8 @@ fi
 end=$(date +%s)
 duration=$(( $end -$beginning ))
 
+cd temp/
+rm -r *
 
 ##display script time
 echo -e "$duration secondes"
