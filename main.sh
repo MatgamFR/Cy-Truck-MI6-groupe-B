@@ -1,7 +1,7 @@
 #!/bin/bash
 
-##count time
-beginning=$(date +%s)
+##count time & +%s.%N allow to display decimals
+beginning=$(date +%s.%N)
 
 #copy data.csv n move it to data's folder
 script_dir=$(dirname "$(readlink -f "$0")")
@@ -234,8 +234,9 @@ then
 fi
 
 
-end=$(date +%s)
-duration=$(( $end -$beginning ))
+end=$(date +%s.%N)
+#ici awk permet d'ajuster le nombre de chiffres derrière la virgule pour l'affichage du temps
+duration=$(echo "$end -$beginning" | awk '{printf "%.2f", $1}' )
 
 cd temp/
 rm -r *
