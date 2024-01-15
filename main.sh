@@ -236,8 +236,8 @@ fi
 
 end=$(date +%s.%N)
 #ici awk permet d'ajuster le nombre de chiffres derrière la virgule pour l'affichage du temps
-duration=$(echo "$end -$beginning" | awk '{printf "%.2f", $1}' )
-
+duration=$(echo "$end -$beginning" | bc )
+##awk '{printf "%.2f", $1}'
 cd temp/
 rm -r *
 
