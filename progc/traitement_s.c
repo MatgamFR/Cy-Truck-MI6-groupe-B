@@ -3,12 +3,20 @@
 void traitement_s(int nbligne, int a){
 	FILE * fichier = fopen("temp/tempt.data", "r");
 	//FILE * fichier2 = fopen("temp/tempt2.data", "w+");
-	
+	//Securite fopen
+	if(fichier == NULL){
+		printf("the file temp/tempt.data cannot be opened\n");
+		exit(1);
+	}
 	int d;
 	float f;
 	
 	truc * tab = malloc(sizeof(truc)*a);
-	
+	//Securite malloc
+	if(tab == NULL){
+	 	printf("Error of memory allocation\n");
+	 	exit(2);
+	 }
 	for(int i=0; i<a; i++){
 		truc t;
 		t.max = 0;
