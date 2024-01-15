@@ -5,8 +5,20 @@ int main(int arg, char** argv){
 	if(arg==2){
 		//Va prendre les fichiers temp/temps2.data et temp/temps2.data en mode lecture et les stocker dans fichier et fichier2
 		FILE * fichier = fopen("temp/temps2.data", "r");
+		if(fichier == NULL){
+			printf("the file temp/temps2.data cannot be opened");
+			exit(01);
+		}
 		FILE * fichier2 = fopen("temp/temps3.data", "r");
+		if(fichier2 == NULL){
+			printf("the file temp/temps3.data cannot be opened");
+			exit(02);
+		}
 		FILE * fichier3 = fopen("temp/temps4.data", "r");
+		if(fichier3 == NULL){
+			printf("the file temp/temps4.data cannot be opened");
+			exit(03);
+		}
 		
 		//Creation d'une chaine de caractere pour la ville et d'un int pour la distance
 		char c[50];
