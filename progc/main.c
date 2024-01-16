@@ -1,7 +1,6 @@
 #include "truck.h"
 
 int main(int arg, char** argv){
-
 	if(arg==2){
 		//Va prendre les fichiers temp/temps2.data et temp/temps2.data en mode lecture et les stocker dans fichier et fichier2
 		FILE * fichier = fopen("temp/temps2.data", "r");
@@ -65,7 +64,20 @@ int main(int arg, char** argv){
 			insertionAVL(a, cam, &h);
 		}
 		//On fait le parcours infixe mais inverse
-		parcoursInfixeInverse(a);
+		camion tab[10];
+		
+		int p=0;
+		parcoursInfixeInverse(a, &p, tab);
+		
+		pAvl b=creerArbre(tab[0]);
+		
+		for(int i=1; i<10; i++){
+			int h = 0;
+			insertionAVL3(b, tab[i], &h);
+		}
+		
+		parcoursInfixe(b);
+		
 	}
 	else{
 		traitement_s(atoi(argv[1]), atoi(argv[2]));

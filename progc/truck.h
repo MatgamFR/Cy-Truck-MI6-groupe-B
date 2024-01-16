@@ -35,9 +35,12 @@ pAvl doubleRotationGauche(pAvl myAvl);
 pAvl doubleRotationDroite(pAvl myAvl);
 pAvl equilibrerAVL(pAvl myAvl);
 pAvl insertionAVL(pAvl myAvl, camion e, int* h);
-void parcoursInfixeInverse(pAvl a);
+void parcoursInfixeInverse(pAvl a, int* compt, camion tab[]);
 
 pAvl insertionAVL2(pAvl myAvl, camion e, int* h);
 void parcoursInfixeInverse2(pAvl a);
+
+pAvl insertionAVL3(pAvl myAvl, camion e, int* h);
+void parcoursInfixe(pAvl a);
 
 void traitement_s(int nbligne, int a);

@@ -124,15 +124,70 @@ pAvl insertionAVL(pAvl myAvl, camion e, int* h){
 }
 
 
-void parcoursInfixeInverse(pAvl a){
-	if(a!=NULL){
-		parcoursInfixeInverse(a->fd);
-		//La ça va print nom_de_la_ville;distance
-		printf("%s;%d;%d\n", (a->val).v3, (a->val).v, (a->val).v2);
-		parcoursInfixeInverse(a->fg);
+void parcoursInfixeInverse(pAvl a, int* compt, camion tab[]){
+	if(a!=NULL && *compt < 10){
+		parcoursInfixeInverse(a->fd, compt, tab);
+		if(*compt < 10){
+			int b = *compt;
+			tab[b] = a->val;
+			(*compt)++;
+		}
+		parcoursInfixeInverse(a->fg, compt, tab);
 	}
 }
 
+
+pAvl insertionAVL3(pAvl myAvl, camion e, int* h){
+	
+	
+	if(myAvl == NULL){
+		*h=1;
+		return creerArbre(e);
+	}
+	else{
+		int comparison = strcmp(e.v3, (myAvl->val).v3);
+		if(comparison < 0){
+		
+			myAvl->fg = insertionAVL3(myAvl->fg, e, h);
+			*h = -*h;
+		}
+		else if(comparison >= 0){
+			myAvl->fd = insertionAVL3(myAvl->fd, e, h);
+		}
+		else{
+			*h = 0;
+			return myAvl;
+		}
+	}
+	if(*h != 0){
+		myAvl->equilibre += *h;
+		myAvl = equilibrerAVL(myAvl);
+		if(myAvl->equilibre == 0){
+			*h = 0;
+		}
+		else{
+			*h = 1;
+		}
+	}
+	return myAvl;
+}
+
+void parcoursInfixe(pAvl a){
+	if(a!=NULL){
+		parcoursInfixe(a->fg);
+		//La ça va print nom_de_la_ville;distance
+		printf("%s;%d;%d\n", (a->val).v3, (a->val).v, (a->val).v2);
+		parcoursInfixe(a->fd);
+	}
+}
+
+void parcoursInfixeInverse2(pAvl a){
+	if(a!=NULL){
+		parcoursInfixeInverse2(a->fd);
+		printf("%d;%.3f;%.3f;%.3f,%.3f\n", (a->val).v2, (a->val).v4, (a->val).v5, (a->val).v6, (a->val).v7);
+		parcoursInfixeInverse2(a->fg);
+	}
+}
 
 pAvl insertionAVL2(pAvl myAvl, camion e, int* h){
 	if(myAvl == NULL){
@@ -161,12 +216,4 @@ pAvl insertionAVL2(pAvl myAvl, camion e, int* h){
 		}
 	}
 	return myAvl;
-}
-
-void parcoursInfixeInverse2(pAvl a){
-	if(a!=NULL){
-		parcoursInfixeInverse2(a->fd);
-		printf("%d;%.3f;%.3f;%.3f,%.3f\n", (a->val).v2, (a->val).v4, (a->val).v5, (a->val).v6, (a->val).v7);
-		parcoursInfixeInverse2(a->fg);
-	}
 }
