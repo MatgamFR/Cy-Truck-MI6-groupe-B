@@ -138,8 +138,6 @@ void parcoursInfixeInverse(pAvl a, int* compt, camion tab[]){
 
 
 pAvl insertionAVL3(pAvl myAvl, camion e, int* h){
-	
-	
 	if(myAvl == NULL){
 		*h=1;
 		return creerArbre(e);
@@ -147,7 +145,6 @@ pAvl insertionAVL3(pAvl myAvl, camion e, int* h){
 	else{
 		int comparison = strcmp(e.v3, (myAvl->val).v3);
 		if(comparison < 0){
-		
 			myAvl->fg = insertionAVL3(myAvl->fg, e, h);
 			*h = -*h;
 		}

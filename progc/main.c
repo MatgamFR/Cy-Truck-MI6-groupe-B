@@ -61,7 +61,7 @@ int main(int arg, char** argv){
 			//printf("%d\n", i);
 			
 			//La on insert dans l'avl
-			insertionAVL(a, cam, &h);
+			a=insertionAVL(a, cam, &h);
 		}
 		//On fait le parcours infixe mais inverse
 		camion tab[10];
@@ -73,7 +73,7 @@ int main(int arg, char** argv){
 		
 		for(int i=1; i<10; i++){
 			int h = 0;
-			insertionAVL3(b, tab[i], &h);
+			b=insertionAVL3(b, tab[i], &h);
 		}
 		
 		parcoursInfixe(b);
