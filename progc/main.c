@@ -1,5 +1,15 @@
 #include "truck.h"
 
+void freeAvl(pAvl a){
+	if(a != NULL){
+		freeAvl(a->fg);
+		freeAvl(a->fd);
+		//free(a->cam.v3);
+		
+		free(a);
+	}
+}
+
 int main(int arg, char** argv){
 	if(arg==2){
 		//Va prendre les fichiers temp/temps2.data et temp/temps2.data en mode lecture et les stocker dans fichier et fichier2
@@ -77,7 +87,9 @@ int main(int arg, char** argv){
 		}
 		
 		parcoursInfixe(b);
-		
+		//free the pointers' memory
+		free(cam.v3);
+		freeAvl(a);
 	}
 	else{
 		traitement_s(atoi(argv[1]), atoi(argv[2]));
