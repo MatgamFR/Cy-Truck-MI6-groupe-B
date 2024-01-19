@@ -124,6 +124,35 @@ pAvl insertionAVL(pAvl myAvl, camion e, int* h){
 }
 
 
+int compareChaines(char *chaine1, char *chaine2){
+    while (*chaine1 != '\0' || *chaine2 != '\0'){
+        // Si l'un des caractères est ' ', on le traite comme le plus grand
+        char c1 = (*chaine1 == ' ') ? 127 : *chaine1;
+        char c2 = (*chaine2 == ' ') ? 127 : *chaine2;
+
+        if (c1 < c2) {
+            return -1; // Chaine1 est devant
+        } else if (c1 > c2) {
+            return 1; // Chaine2 est devant
+        }
+
+        // Passer au caractère suivant dans les deux chaînes
+        chaine1++;
+        chaine2++;
+    }
+    
+     // Les chaînes sont identiques jusqu'à présent, mais une peut être plus courte
+    if (*chaine1 == '\0' && *chaine2 != '\0') {
+        return -1; // Chaine1 est devant
+    } else if (*chaine1 != '\0' && *chaine2 == '\0') {
+        return 1; // Chaine2 est devant
+    }
+
+    // Les chaînes sont identiques
+    return 0;
+}
+
+
 void parcoursInfixeInverse(pAvl a, int* compt, camion tab[]){
 	if(a!=NULL && *compt < 10){
 		parcoursInfixeInverse(a->fd, compt, tab);
@@ -143,7 +172,7 @@ pAvl insertionAVL3(pAvl myAvl, camion e, int* h){
 		return creerArbre(e);
 	}
 	else{
-		int comparison = strcmp(e.v3, (myAvl->val).v3);
+		int comparison = compareChaines(e.v3, (myAvl->val).v3);
 		if(comparison < 0){
 			myAvl->fg = insertionAVL3(myAvl->fg, e, h);
 			*h = -*h;
