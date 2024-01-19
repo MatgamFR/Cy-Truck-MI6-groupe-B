@@ -44,3 +44,5 @@ pAvl insertionAVL3(pAvl myAvl, camion e, int* h);
 void parcoursInfixe(pAvl a);
 
 void traitement_s(int nbligne, int a);
+
+int compareChaines(char *chaine1, char *chaine2);
