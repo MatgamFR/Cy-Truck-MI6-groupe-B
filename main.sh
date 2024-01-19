@@ -186,11 +186,11 @@ if [ $t -eq 1 ]
 then
 	#Un awk optimiser et c'est cool, count compte le nombre de fois ou la ville est la fin trajet et au millieu, count2 compte le nombre de fois ou c'est un début de trajet, donc on aditionne les 2 pour avoir le totale 
 	awk -F';' '{
-    if ($2 == 1) {
+    if ($2 == 1 && !visited[$1, $3]) {
         count2[$3]++;
         visited[$1, $3]++;
-    }
-    if ($3 != $4 && visited[$1, $4] == 0) {
+    }  
+    if ($3 != $4 && !visited[$1, $4]) {
         count[$4]++;
         visited[$1, $4]++;
     }
