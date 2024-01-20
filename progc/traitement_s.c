@@ -60,7 +60,7 @@ void traitement_s(int nbligne, int a){
 		cam.v5 = (tab[i]).moy / (tab[i]).compt;
 		cam.v6 = (tab[i]).max;
 		
-		insertionAVL2(ab, cam, &h);
+		ab=insertionAVL2(ab, cam, &h);
 	
 		//fprintf(fichier2, "%d;%.3f;%.3f;%.3f,%.3f\n", i+1, (tab[i]).min, (tab[i]).moy / (tab[i]).compt, (tab[i]).max, (tab[i]).max - (tab[i]).min);
 	}
