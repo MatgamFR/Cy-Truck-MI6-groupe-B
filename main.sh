@@ -151,20 +151,67 @@ then
 	#sort -t';' -d -k6 > temp/temp2.data
 	grep ";1;" $1 | awk -F';' -W sprintf=num '{count[$6]++} END {for(i in count){printf("%s;%d\n", i, count[i])}}' | sort -t';' -n -r -k2,2 | head -10  > temp/tempd1.data
 	
-	gnuplot histd1.txt
-	convert -rotate 90 images/d1.png images/d1.png
+	gnuplot <<-EOF
+	set terminal png font "Arial,9"
+	set output 'demo/d1.png'
+	set style data histogram
+	set style fill solid 0.5
+	set style histogram clustered
+	set xtics rotate by -270
+	set y2tics rotate by -270
+	set bmargin 14
+	set tmargin 5
+	set datafile separator ";"
+
+	unset ytics
+	set y2tics nomirror
+	set y2range [0:*]
+	set y2label "Nb routes"
+	set ylabel "Histogramme horizontal" rotate by -270
+	set xlabel "Drivers Names" rotate by -180
 	
-	xdg-open images/d1.png
+	set size square
+	set boxwidth 2 
+	
+	plot "temp/tempd1.data" using 2:xtic(1) axis x1y2 notitle lc rgb "blue"
+	EOF
+	
+	convert -rotate 90 demo/d1.png demo/d1.png
+	
+	xdg-open demo/d1.png
 fi
 
 if [ $d2 -eq 1 ]
 then
 	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$6]+=$5} END {for(i in count){printf("%s;%f\n", i, count[i])}}' $1 | sort -t';' -r -n -k2,2 | head -10  > temp/tempd2.data
 	
-	gnuplot histd2.txt
-	convert -rotate 90 images/d2.png images/d2.png
+	gnuplot <<-EOF
+	set terminal png font "Arial,7.5"
+	set output 'demo/d2.png'
+	set style data histogram
+	set style fill solid 0.5
+	set style histogram clustered
+	set xtics rotate by -270
+	set y2tics rotate by -270
+	set bmargin 14
+	set tmargin 5
+	set datafile separator ";"
+
+	unset ytics
+	set y2tics nomirror
+	set y2range [0:*]
+	set y2label "Distance (Km)"
+	set ylabel "Histogramme horizontal" rotate by -270
+	set xlabel "Drivers Names" rotate by -180
 	
-	xdg-open images/d2.png
+	set size square
+	set boxwidth 2 
+	
+	plot "temp/tempd2.data" using 2:xtic(1) axis x1y2 notitle lc rgb "blue" 
+	EOF
+	convert -rotate 90 demo/d2.png demo/d2.png
+	
+	xdg-open demo/d2.png
 fi
 
 if [ $l -eq 1 ]
@@ -173,9 +220,26 @@ then
 	
 	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$1]+=$5} END {for(i in count){printf("%d;%f\n", i, count[i])}}' $1 | sort -t';' -r -n -k2 | head -10 | sort -t' ' -r -n -k1,1 > temp/templ.data
 	
-	gnuplot hist.txt
+	gnuplot <<-EOF
+	set terminal png font "Arial,6"
+	set output "demo/l.png"
+	set title "Histogramme"
+	set style data histogram
+	set style fill solid 0.5
+	set style histogram clustered
+	set datafile separator ";"
 	
-	xdg-open images/l.png
+	set yrange [0:*]
+	set ylabel "Distance (Km)" rotate by -270
+	set xlabel "Route ID"
+	
+	set size square
+	set boxwidth 2 
+	
+	plot "temp/templ.data" using 2:xtic(1) notitle lc rgb "blue"
+	EOF
+	
+	xdg-open demo/l.png
 	
 	#sort -t';' -r  -n -k5 data.csv | head -n10 > 10long.csv
 	#cat 10long.csv
@@ -220,9 +284,27 @@ END {
 	#On lance le programme avec comme argument le nombre de ligne du fichier et les sorties du programme vont dans temp/tempsfini.data
 	./progc/cy_truck $a | head -10 > temp/tempsfini.data
 	
-	gnuplot hist_t.txt
+	gnuplot <<-EOF
+	set terminal png font "Arial,6" lw 0
+	set output "demo/t.png"
+	set title "Histogramme"
+	set style data histogram
+	set style fill solid 0.5
+	set style histogram clustered
+	set datafile separator ";"
+	set bmargin 13
 	
-	xdg-open images/t.png
+	set ylabel "Nb Routes" rotate by -270
+	set xlabel "Town Names"
+	set xtic rotate by 45 right
+	
+	set size square
+	set boxwidth 2
+	
+	plot "temp/tempsfini.data" using 2:xtic(1) notitle lc rgb "blue", '' using 3:xtic(1) lc rgb "green" notitle
+	EOF
+	
+	xdg-open demo/t.png
 	
 	#sort -t' ' -k1 -n -r temp/temps3.data > temp/temps3.data
 fi
@@ -245,9 +327,23 @@ then
 	
 	./progc/cy_truck $a $b | head -50 | awk -W sprintf=num '{x++; printf("%d;%s\n", x, $1)}' > temp/temptfini.data
 	
-	gnuplot hists.txt
+	gnuplot <<-EOF
+	set terminal png font "Arial,6"
+	set output "demo/s.png"
+	set title "Histogramme"
+	set style data lines
+	set style fill solid 0.5
+	set datafile separator ";"
 	
-	xdg-open images/s.png
+	set xrange [1:*]
+	set xtic rotate by 45 right
+	set xlabel "Route ID"
+	set ylabel "Distance (Km)" rotate by -270
+	
+	plot "temp/temptfini.data" using 1:3:5:xtic(2) with filledcurves below title "Distance Max/Min (Km)" lc rgb "blue", '' u 1:4 lc rgb "blue" title "Distance Average (Km)"
+	EOF
+	
+	xdg-open demo/s.png
 fi
 
 
