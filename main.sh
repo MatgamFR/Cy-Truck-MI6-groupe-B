@@ -11,25 +11,25 @@ cp "$script_dir/$1" "$script_dir/data/"
 width=$(tput cols)
 height=$(tput lines)
 
-if [ $# -lt 2 ]
+if [ $# -lt 2 ] #check if there is enough argument
 then
-	echo "Error don't have any argument'"
+	echo "Error don't have enough argument'"
 	exit 1
 fi
 
-if [ ! -f $1 ]
+if [ ! -f $1 ] #check if the first argument is a file or not
 then
 	echo "Error $1 is not a File"
 	exit 2
 fi
 
-clear_terminal () {
+clear_terminal () { 
 	#echo "${enDefaut}"
 	reset > /dev/null
 	}
 	
-initialiser_variables () {
-	# COULEURS
+init_variables () {
+	# COLORS
 
 	fdBlack='\033[40m'
 	fdRed='\033[41m'
@@ -64,16 +64,16 @@ initialiser_variables () {
 	nbre_page_radio=0
 
 	la_pageRadio=1
-	# sous_recherche=" "
+	# subsearch=" "
 	fichier_log=""
 
 	header=""
 	footer=""
 
-	# affiche les fréquences ou non
+	# displays frequencies or not
 	bool_show_freq=false # bool_show_freq=true
 
-} # fin de initialiser_variables
+} # end of init_variable 
 
 create_space () {
 	for i in `seq 0 $n`
@@ -81,7 +81,7 @@ create_space () {
 		echo -n " "
 	done
 }
-	
+#initialisation of the argument related variables to 0	
 help=0
 d1=0
 d2=0
@@ -89,11 +89,11 @@ l=0
 s=0
 t=0
 
-for i in `seq 2 $#`
+for i in `seq 2 $#` #checking all the arguments except the first one because it's the file
 do
 	case ${!i} in
 		"-h") help=1 d1=0 d2=0 l=0 t=0 s=0
-		break  ;;
+		break  ;; 
 		"-d1") d1=1  ;;
 		"-d2") d2=1  ;;
 		"-l") l=1  ;;
@@ -104,11 +104,11 @@ do
 done
 
 clear_terminal
-initialiser_variables
+init_variables
 
 
 if [ $help -eq 1 ]
-then
+then #first creating a truck in the terminal
 	n=$(echo "($width - 9)/2" | bc)
 	create_space 
 	echo -e "${enBold}${enRed}Help Menu${enDefault}"
@@ -136,6 +136,7 @@ then
     create_space 
     echo -e "    '-'                '-'  '-'                       '-'  '-'${enDefault}"
     echo
+    #displaying all the information for the various argument
 	echo "-h | displays help menu"
 	echo "-d1 | creates a graph with the 10 drivers who have made the most trips, sorted by descending order"
 	echo "-d2 | creates a graph with the 10 drivers who traveled the longest distance, sorted by descending order"
@@ -149,8 +150,10 @@ fi
 if [ $d1 -eq 1 ]
 then
 	#sort -t';' -d -k6 > temp/temp2.data
+ 	#taking only the first step of each roads to count the number of the travel for each driver then we sort by descending order and we take the 10 first only
 	grep ";1;" $1 | awk -F';' -W sprintf=num '{count[$6]++} END {for(i in count){printf("%s;%d\n", i, count[i])}}' | sort -t';' -n -r -k2,2 | head -10  > temp/tempd1.data
-	
+
+ 	#creating the horizontal graph using gnuplot
 	gnuplot <<-EOF
 	set terminal png font "Arial,9"
 	set output 'demo/d1.png'
@@ -159,10 +162,11 @@ then
 	set style histogram clustered
 	set xtics rotate by -270
 	set y2tics rotate by -270
-	set bmargin 14
+	set bmargin 14 #setting up the margin
 	set tmargin 5
 	set datafile separator ";"
 
+	#setting up the x and y,y2 names and y2 range
 	unset ytics
 	set y2tics nomirror
 	set y2range [0:*]
@@ -176,15 +180,17 @@ then
 	plot "temp/tempd1.data" using 2:xtic(1) axis x1y2 notitle lc rgb "blue"
 	EOF
 	
-	convert -rotate 90 demo/d1.png demo/d1.png
+	convert -rotate 90 demo/d1.png demo/d1.png #changing the graph from vertical to horizontal
 	
 	xdg-open demo/d1.png
 fi
 
 if [ $d2 -eq 1 ]
 then
+	#counting the drivers with the greatest distance traveled, sorting by descending order and taking the 10 first 
 	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$6]+=$5} END {for(i in count){printf("%s;%f\n", i, count[i])}}' $1 | sort -t';' -r -n -k2,2 | head -10  > temp/tempd2.data
-	
+
+ 	#creating the horizontal graph using gnuplot
 	gnuplot <<-EOF
 	set terminal png font "Arial,7.5"
 	set output 'demo/d2.png'
@@ -193,10 +199,11 @@ then
 	set style histogram clustered
 	set xtics rotate by -270
 	set y2tics rotate by -270
-	set bmargin 14
+	set bmargin 14 #setting up the margin
 	set tmargin 5
 	set datafile separator ";"
 
+ 	#setting up the x and y,y2 names and y2 range
 	unset ytics
 	set y2tics nomirror
 	set y2range [0:*]
@@ -209,7 +216,7 @@ then
 	
 	plot "temp/tempd2.data" using 2:xtic(1) axis x1y2 notitle lc rgb "blue" 
 	EOF
-	convert -rotate 90 demo/d2.png demo/d2.png
+	convert -rotate 90 demo/d2.png demo/d2.png #changing the graph from vertical to horizontal
 	
 	xdg-open demo/d2.png
 fi
@@ -217,10 +224,12 @@ fi
 if [ $l -eq 1 ]
 then
 	#sort -t';' -n -k1 -k2 $1 | head -n10 | LC_NUMERIC="C" awk -F';' -W sprintf=num '{sum += $5}END{print sum}'> temp1.csv
-	
+	#counting the distance of each complete travel by additioning the distance of each step and then sort by descending order and we keep the 10 first
 	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$1]+=$5} END {for(i in count){printf("%d;%f\n", i, count[i])}}' $1 | sort -t';' -r -n -k2 | head -10 | sort -t' ' -r -n -k1,1 > temp/templ.data
-	
+
+ 	#creating the graph using gnuplot
 	gnuplot <<-EOF
+ 	#setting up the parameters for the graph
 	set terminal png font "Arial,6"
 	set output "demo/l.png"
 	set title "Histogramme"
@@ -228,7 +237,8 @@ then
 	set style fill solid 0.5
 	set style histogram clustered
 	set datafile separator ";"
-	
+
+ 	#setting up the x and y names and y range
 	set yrange [0:*]
 	set ylabel "Distance (Km)" rotate by -270
 	set xlabel "Route ID"
@@ -248,7 +258,7 @@ fi
 
 if [ $t -eq 1 ]
 then
-	#Un awk optimiser et c'est cool, count compte le nombre de fois ou la ville est la fin trajet et au millieu, count2 compte le nombre de fois ou c'est un début de trajet, donc on aditionne les 2 pour avoir le totale 
+	#count counts the number of times where the city is the start, in the middle or is the end of the journey but it can be counted only once for each journey, count2 counts the number of times where it is the start of the journey
 	awk -F';' '{
     if ($2 == 1) {
         count2[$3]++;
@@ -268,23 +278,25 @@ END {
     }
 }' $1 > temp/temps.data
 	
-	#Une ligne permettant de compter le nombre de ligne dans temp/temps.data pour permettre de faire la boucle for dans la programme c
+	#counting the number of lines in temp/temps.data to do the for loop in the c program
 	a=`cat temp/temps.data | wc -l`
 	
-	#des cuts pour séparer la colonne 1 et 2 dans des fichiers differents
+	#cuts to separate column 1 and 2 in different files
 	cut -d';' -f1 temp/temps.data > temp/temps2.data
 	cut -d';' -f2 temp/temps.data > temp/temps3.data
 	cut -d';' -f3 temp/temps.data > temp/temps4.data
 	
-	#compilation du programme c
+	#compilation of c program
 	cd progc
 	make
 	cd ..
 	
-	#On lance le programme avec comme argument le nombre de ligne du fichier et les sorties du programme vont dans temp/tempsfini.data
+	#We launch the program with the number of lines in the file as an argument and the program outputs go to temp/tempsfini.data
 	./progc/cy_truck $a | head -10 > temp/tempsfini.data
-	
+
+ 	#creating the graph with gnuplot
 	gnuplot <<-EOF
+ 	#setting up the graph parameters
 	set terminal png font "Arial,6" lw 0
 	set output "demo/t.png"
 	set title "Histogramme"
@@ -293,7 +305,9 @@ END {
 	set style histogram clustered
 	set datafile separator ";"
 	set bmargin 13
-	
+ 	
+	#setting up x and y names
+ 	
 	set ylabel "Nb Routes" rotate by -270
 	set xlabel "Town Names"
 	set xtic rotate by 45 right
