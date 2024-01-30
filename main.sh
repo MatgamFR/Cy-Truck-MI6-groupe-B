@@ -1,8 +1,5 @@
 #!/bin/bash
 
-##count time & +%s.%N allow to display decimals
-beginning=$(date +%s.%N)
-
 #copy data.csv n move it to data's folder
 script_dir=$(dirname "$(readlink -f "$0")")
 cp "$script_dir/$1" "$script_dir/data/"
@@ -22,6 +19,24 @@ then
 	echo "Error $1 is not a File"
 	exit 2
 fi
+#we check if directory temp exists or not
+if [ ! -d temp ]
+then
+	mkdir temp
+fi
+#we delete all the temp files 
+cd temp/
+rm -r *
+cd ..
+
+#we check if the file c_truck is in progc if not we make it 
+if [ ! -f progc/cy_truck ]
+then
+	cd progc
+	make
+	cd ..
+fi
+
 
 clear_terminal () { 
 	#echo "${enDefaut}"
@@ -59,11 +74,6 @@ init_variables () {
 
 	enDefault='\033[0m'
 
-	# GENERALES
-	nbre_radios=0
-	nbre_page_radio=0
-
-	la_pageRadio=1
 	# subsearch=" "
 	fichier_log=""
 
@@ -108,7 +118,11 @@ init_variables
 
 
 if [ $help -eq 1 ]
-then #first creating a truck in the terminal
+then 
+	#count time & +%s.%N allow to display decimals
+	beginning=$(date +%s.%N)
+
+	#first creating a truck in the terminal
 	n=$(echo "($width - 9)/2" | bc)
 	create_space 
 	echo -e "${enBold}${enRed}Help Menu${enDefault}"
@@ -136,7 +150,7 @@ then #first creating a truck in the terminal
     create_space 
     echo -e "    '-'                '-'  '-'                       '-'  '-'${enDefault}"
     echo
-    #displaying all the information for the various argument
+    #displaying all the information for the various arguments
 	echo "-h | displays help menu"
 	echo "-d1 | creates a graph with the 10 drivers who have made the most trips, sorted by descending order"
 	echo "-d2 | creates a graph with the 10 drivers who traveled the longest distance, sorted by descending order"
@@ -145,11 +159,23 @@ then #first creating a truck in the terminal
 	echo "-s | creates  a graph with the minimum, maximum, and average distance of the steps for 50 trips who have the biggest gap in the distance of their steps, sorted by descending order"
 	echo -e "${enBold}Press [Enter] to continue${enBold}"
 	read -p ""
+	
+	
+	end=$(date +%s.%N)
+	#we calculate the time duration since the beginning of the 
+	duration=$(echo "$end -$beginning" | bc )
+
+
+	##display script time
+	echo -e "-h duration is $duration secondes"
 fi
 
 if [ $d1 -eq 1 ]
 then
-	#sort -t';' -d -k6 > temp/temp2.data
+
+	#count time & +%s.%N allow to display decimals
+	beginning=$(date +%s.%N)	
+	
  	#taking only the first step of each roads to count the number of the travel for each driver then we sort by descending order and we take the 10 first only
 	grep ";1;" $1 | awk -F';' -W sprintf=num '{count[$6]++} END {for(i in count){printf("%s;%d\n", i, count[i])}}' | sort -t';' -n -r -k2,2 | head -10  > temp/tempd1.data
 
@@ -171,7 +197,7 @@ then
 	set y2tics nomirror
 	set y2range [0:*]
 	set y2label "Nb routes"
-	set ylabel "Histogramme horizontal" rotate by -270
+	set ylabel "Option -d1 : Nb routes = f(Driver)" rotate by -270
 	set xlabel "Drivers Names" rotate by -180
 	
 	set size square
@@ -183,10 +209,21 @@ then
 	convert -rotate 90 images/d1.png images/d1.png #changing the graph from vertical to horizontal
 	
 	xdg-open images/d1.png
+	end=$(date +%s.%N)
+	#we calculate the time duration since the beginning of the 
+	duration=$(echo "$end -$beginning" | bc )
+
+
+	##display script time
+	echo -e "-d1 duration is $duration secondes"
 fi
 
 if [ $d2 -eq 1 ]
 then
+
+	#count time & +%s.%N allow to display decimals
+	beginning=$(date +%s.%N)
+		
 	#counting the drivers with the greatest distance traveled, sorting by descending order and taking the 10 first 
 	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$6]+=$5} END {for(i in count){printf("%s;%f\n", i, count[i])}}' $1 | sort -t';' -r -n -k2,2 | head -10  > temp/tempd2.data
 
@@ -208,7 +245,7 @@ then
 	set y2tics nomirror
 	set y2range [0:*]
 	set y2label "Distance (Km)"
-	set ylabel "Histogramme horizontal" rotate by -270
+	set ylabel "Option -d2 : Distance = f(Driver)" rotate by -270
 	set xlabel "Drivers Names" rotate by -180
 	
 	set size square
@@ -219,11 +256,22 @@ then
 	convert -rotate 90 images/d2.png images/d2.png #changing the graph from vertical to horizontal
 	
 	xdg-open images/d2.png
+	
+	end=$(date +%s.%N)
+	#we calculate the time duration since the beginning of the 
+	duration=$(echo "$end -$beginning" | bc )
+
+
+	##display script time
+	echo -e "-d2 duration is $duration secondes"
 fi
 
 if [ $l -eq 1 ]
 then
-	#sort -t';' -n -k1 -k2 $1 | head -n10 | LC_NUMERIC="C" awk -F';' -W sprintf=num '{sum += $5}END{print sum}'> temp1.csv
+
+	#count time & +%s.%N allow to display decimals
+	beginning=$(date +%s.%N)
+
 	#counting the distance of each complete travel by additioning the distance of each step and then sort by descending order and we keep the 10 first
 	LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$1]+=$5} END {for(i in count){printf("%d;%f\n", i, count[i])}}' $1 | sort -t';' -r -n -k2 | head -10 | sort -t' ' -r -n -k1,1 > temp/templ.data
 
@@ -232,7 +280,7 @@ then
  	#setting up the parameters for the graph
 	set terminal png font "Arial,6"
 	set output "images/l.png"
-	set title "Histogramme"
+	set title "Option -l : Distance = f(Route)"
 	set style data histogram
 	set style fill solid 0.5
 	set style histogram clustered
@@ -251,13 +299,23 @@ then
 	
 	xdg-open images/l.png
 	
-	#sort -t';' -r  -n -k5 data.csv | head -n10 > 10long.csv
-	#cat 10long.csv
+	end=$(date +%s.%N)
+	#we calculate the time duration since the beginning of the 
+	duration=$(echo "$end -$beginning" | bc )
+
+
+	##display script time
+	echo -e "-l duration is $duration secondes"
+	
 fi
 
 
 if [ $t -eq 1 ]
 then
+
+	#count time & +%s.%N allow to display decimals
+	beginning=$(date +%s.%N)
+
 	#count counts the number of times where the city is the start, in the middle or is the end of the journey but it can be counted only once for each journey, count2 counts the number of times where it is the start of the journey
 	awk -F';' '{
     if ($2 == 1) {
@@ -286,10 +344,7 @@ END {
 	cut -d';' -f2 temp/temps.data > temp/temps3.data
 	cut -d';' -f3 temp/temps.data > temp/temps4.data
 	
-	#compilation of c program
-	cd progc
-	make
-	cd ..
+	
 	
 	#We launch the program with the number of lines in the file as an argument and the program outputs go to temp/tempsfini.data
 	./progc/cy_truck $a | head -10 > temp/tempsfini.data
@@ -299,7 +354,7 @@ END {
  	#setting up the graph parameters
 	set terminal png font "Arial,6" lw 0
 	set output "images/t.png"
-	set title "Histogramme"
+	set title "Option -t : Nb routes = f(Towns)"
 	set style data histogram
 	set style fill solid 0.5
 	set style histogram clustered
@@ -320,31 +375,37 @@ END {
 	
 	xdg-open images/t.png
 	
-	#sort -t' ' -k1 -n -r temp/temps3.data > temp/temps3.data
+	
+	end=$(date +%s.%N)
+	#we calculate the time duration since the beginning of the 
+	duration=$(echo "$end -$beginning" | bc )
+
+
+	##display script time
+	echo -e "-t duration is $duration secondes"
 fi
 
 
 if [ $s -eq 1 ]
 then
+
+	#count time & +%s.%N allow to display decimals
+	beginning=$(date +%s.%N)
+
 	cut -d';' -f1,5 $1 | tail -n +2 > temp/tempt.data
-	
-	#LC_NUMERIC="C" awk -F';' -W sprintf=num '{count[$1]+=$5; countmoy[$1]++; if($5 >= countmax[$1]){countmax[$1]=$5}; if(($5 <= countmin[$1]) || (countmin[$1] == 0)){countmin[$1]=$5}} END {for(i in count){printf("%d;%.3f;%.3f;%.3f;%.3f\n", i, countmin[i], count[i]/countmoy[i], countmax[i], countmax[i]-countmin[i])}}' $1 > temp/tempt.data
-	
-	
+	#counting the number of lines in temp/temps.data to do the for loop in the c program
 	a=`cat temp/tempt.data | wc -l`
+	#b count the number of different id in $1
 	b=`cat $1 | grep ";1;" | awk -F';' '{if($1 >= max){max = $1}} END {print max}'`
-	#b=`cat $1 | grep ";1;" | wc -l`
 	
-	cd progc
-	make
-	cd ..
 	
+	#We launch the program with the number of lines in the file as argument 1 and the number of id as argument 2, it will take the first 50 lines, add a number ahead each line and the program outputs go to temp/temptfini.data
 	./progc/cy_truck $a $b | head -50 | awk -W sprintf=num '{x++; printf("%d;%s\n", x, $1)}' > temp/temptfini.data
 	
 	gnuplot <<-EOF
 	set terminal png font "Arial,6"
 	set output "images/s.png"
-	set title "Histogramme"
+	set title "Option -s : Distance = f(Route)"
 	set style data lines
 	set style fill solid 0.5
 	set datafile separator ";"
@@ -358,15 +419,15 @@ then
 	EOF
 	
 	xdg-open images/s.png
+	
+	end=$(date +%s.%N)
+	#we calculate the time duration since the beginning of the 
+	duration=$(echo "$end -$beginning" | bc )
+
+
+	##display script time
+	echo -e "-s duration is $duration secondes"
 fi
 
 
-end=$(date +%s.%N)
-#ici awk permet d'ajuster le nombre de chiffres derrière la virgule pour l'affichage du temps
-duration=$(echo "$end -$beginning" | bc )
-##awk '{printf "%.2f", $1}'
-cd temp/
-rm -r *
 
-##display script time
-echo -e "$duration secondes"
