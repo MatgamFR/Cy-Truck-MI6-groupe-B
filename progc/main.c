@@ -1,5 +1,6 @@
 #include "truck.h"
 
+//function to free the AVL allocation's memory
 void freeAvl(pAvl a){
 	if(a != NULL){
 		freeAvl(a->fg);
@@ -12,7 +13,7 @@ void freeAvl(pAvl a){
 
 int main(int arg, char** argv){
 	if(arg==2){
-		//Va prendre les fichiers temp/temps2.data et temp/temps2.data en mode lecture et les stocker dans fichier et fichier2
+		//It's taking the temp/temps2.data and temp/temps3.data files n we r giving them the read mode, then we save them as  Fichier n Fichier2
 		FILE * fichier = fopen("temp/temps2.data", "r");
 		if(fichier == NULL){
 			printf("the file temp/temps2.data cannot be opened");
@@ -29,40 +30,40 @@ int main(int arg, char** argv){
 			exit(03);
 		}
 		
-		//Creation d'une chaine de caractere pour la ville et d'un int pour la distance
+		//Create a character string for the city n integer for the distance
 		char c[50];
 		int d;
 		int d2;
 		
-		//On recupere le nom de la ville et on l'a met dans c, de la meme façon pour la distance et d, le "%[^\n]\n" signifie qu'on prend tant qu'on tombe pas sur un \n
+		//We r saving the city's name to move it in c. The same thing for the distance and d. The symbol "%[^\n]\n" means we r taking as much information as we need while it didn't cross a \n
 		fscanf(fichier, "%[^\n]\n", c);
 		fscanf(fichier2, "%d", &d);
 		fscanf(fichier3, "%d", &d2);
 		
-		//On cree une varible de type camion et on met les valeurs qu'on vient de récup dans cam.v et cam.v2, le strdup(c) signifie que c'est une copie de c, sinon ça va bug et prendre toujours la meme chaine de caractere (a cause des pointeurs tout ça)
+		//We r creating a variable called camion n we r moving the values we just got in cam.v n cam.v2. strdu(c) means it's a copy of the variable c, otherwise there will be error n it will always take the same character string (cause of pointers mainly)
 		camion cam;
 		cam.v = d;
 		cam.v2 = d2;
 		cam.v3 = strdup(c);
 		
-		//Creation avl avec cam en valeur
+		//To create an AVL by using cam value for the avl's root
 		pAvl a=creerArbre(cam);
-		
-		//Prend le nombre de ligne avec l'argument $a qu'on a donne dans main.sh, et on fait -1 car on deja mis le premier element
+
+		//It's taking the lines numbers with the $a argument that we got in main.sh. -1 cause we already got the 1st element
 		int nbligne = atoi(argv[1])-1;
-		
-		//boucle for pour traverser toutes les lignes des fichiers
+
+		//loop for to going through every singles lines of the different files
 		for(int i=0; i<nbligne; i++){
 			int h=0;
 			
-			//Meme chose que tout a l'heure
+			//Same thing as before
 			fscanf(fichier, "%[^\n]\n", c);
 			fscanf(fichier2, "%d", &d);
 			fscanf(fichier3, "%d", &d2);
 			
 			//printf("%s\n", c);
 			
-			//Pareil
+			//Asme thing
 			camion cam;
 			cam.v = d;
 			cam.v2 = d2;
@@ -70,10 +71,10 @@ int main(int arg, char** argv){
 			
 			//printf("%d\n", i);
 			
-			//La on insert dans l'avl
+			//To insert element in the AVL
 			a=insertionAVL(a, cam, &h);
 		}
-		//On fait le parcours infixe mais inverse
+		//we r going through the tree by the reverse infix method
 		camion tab[10];
 		
 		int p=0;
@@ -133,7 +134,7 @@ int main(int arg, char** argv){
 			
 			insertionAVL2(a, cam, &h);
 		}
-		//On fait le parcours infixe mais inverse
+		//we r going through the tree by the reverse infix method
 		parcoursInfixeInverse2(a);*/
 	}
 	
