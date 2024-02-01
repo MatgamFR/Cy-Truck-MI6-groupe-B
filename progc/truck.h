@@ -21,12 +21,12 @@ typedef struct Avl{
     struct Avl* fd;
 }Avl,*pAvl;
 
-typedef struct Truc{
+typedef struct Town{
 	float max;
 	float min;
 	float moy;
 	int compt;
-} truc;
+} town;
 
 pAvl createAVL(truck num);
 pAvl rotationLeft(pAvl myAvl);

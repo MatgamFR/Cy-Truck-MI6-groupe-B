@@ -7,10 +7,10 @@ void traitement_s(int nbline, int a){
 	int d;
 	float f;
 	
-	truc * tab = malloc(sizeof(truc)*a);
+	town * tab = malloc(sizeof(town)*a);
 	
 	for(int i=0; i<a; i++){
-		truc t;
+		town t;
 		t.max = 0;
 		t.moy = 0;
 		t.min = 0;
