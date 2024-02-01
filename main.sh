@@ -1,5 +1,6 @@
 #!/bin/bash
-
+#if $1 does not have enough rights, the script will crash
+chmod 777 $1
 #copy data.csv n move it to data's folder
 if [ ! -f data/$1 ]
 then
