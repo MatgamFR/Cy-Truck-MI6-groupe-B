@@ -1,23 +1,23 @@
 #include "truck.h"
 
-pAvl creerArbre(camion num){
-    pAvl monAvl=(pAvl)malloc(sizeof(Avl));
+pAvl createAVL(truck num){
+    pAvl myAvl=(pAvl)malloc(sizeof(Avl));
 
-    if(monAvl==NULL){
+    if(myAvl==NULL){
         printf("Error of memory Allocation\n");
         exit(1);
     }
 
-    monAvl->val=num;
-    monAvl->equilibre=0;
-    monAvl->fg=NULL;
-    monAvl->fd=NULL;
+    myAvl->val=num;
+    myAvl->balance=0;
+    myAvl->fg=NULL;
+    myAvl->fd=NULL;
 
-    return monAvl;
+    return myAvl;
 }
 
 
-pAvl rotationGauche(pAvl myAvl){
+pAvl rotationLeft(pAvl myAvl){
 
     pAvl bivot;
     int eqA,eqB;
@@ -26,18 +26,18 @@ pAvl rotationGauche(pAvl myAvl){
     myAvl->fd=bivot->fg;
     bivot->fg=myAvl;
 
-    eqA=myAvl->equilibre;
-    eqB=bivot->equilibre;
+    eqA=myAvl->balance;
+    eqB=bivot->balance;
 
-    myAvl->equilibre=eqA-max(eqB,0)-1;
-    bivot->equilibre= min(eqA-2,min(eqA+eqB-2,eqB-1));
+    myAvl->balance=eqA-max(eqB,0)-1;
+    bivot->balance= min(eqA-2,min(eqA+eqB-2,eqB-1));
 
     myAvl=bivot;
 
     return myAvl;
 }
 
-pAvl rotationDroite(pAvl myAvl){
+pAvl rotationRight(pAvl myAvl){
 
     pAvl bivot;
     int eqA,eqB;
@@ -46,11 +46,11 @@ pAvl rotationDroite(pAvl myAvl){
     myAvl->fg=bivot->fd;
     bivot->fd=myAvl;
 
-    eqA=myAvl->equilibre;
-    eqB=bivot->equilibre;
+    eqA=myAvl->balance;
+    eqB=bivot->balance;
 
-    myAvl->equilibre=eqA-min(eqB,0)+1;
-    bivot->equilibre= max(eqA+2,max(eqA+eqB+2,eqB+1));
+    myAvl->balance=eqA-min(eqB,0)+1;
+    bivot->balance= max(eqA+2,max(eqA+eqB+2,eqB+1));
 
     myAvl=bivot;
 
@@ -58,46 +58,46 @@ pAvl rotationDroite(pAvl myAvl){
 }
 
 
-pAvl doubleRotationGauche(pAvl myAvl){
+pAvl doubleRotationLeft(pAvl myAvl){
     pAvl bivot;
-    myAvl->fd=rotationDroite(myAvl->fd);
+    myAvl->fd=rotationRight(myAvl->fd);
     
-    return rotationGauche(myAvl);
+    return rotationLeft(myAvl);
 }
 
-pAvl doubleRotationDroite(pAvl myAvl){
+pAvl doubleRotationRight(pAvl myAvl){
     pAvl bivot;
-    myAvl->fg=rotationGauche(myAvl->fg);
+    myAvl->fg=rotationLeft(myAvl->fg);
     
-    return rotationDroite(myAvl);
+    return rotationRight(myAvl);
 }
 
 
-pAvl equilibrerAVL(pAvl myAvl){
-    if(myAvl->equilibre >=2 ){
-        if(myAvl->fd->equilibre >= 0){
-            return rotationGauche(myAvl);
+pAvl balanceAVL(pAvl myAvl){
+    if(myAvl->balance >=2 ){
+        if(myAvl->fd->balance >= 0){
+            return rotationLeft(myAvl);
         }
         else{
-            return doubleRotationGauche(myAvl);
+            return doubleRotationLeft(myAvl);
         }
     }
-    else if(myAvl->equilibre <= -2){
-        if(myAvl->fg->equilibre <=0){
-            return rotationDroite(myAvl);
+    else if(myAvl->balance <= -2){
+        if(myAvl->fg->balance <=0){
+            return rotationRight(myAvl);
         }
         else{
-            return doubleRotationDroite(myAvl);
+            return doubleRotationRight(myAvl);
         }
     }
     return myAvl;
 }
 
 
-pAvl insertionAVL(pAvl myAvl, camion e, int* h){
+pAvl insertionAVL(pAvl myAvl, truck e, int* h){
 	if(myAvl == NULL){
 		*h=1;
-		return creerArbre(e);
+		return createAVL(e);
 	}
 	else if(e.v < (myAvl->val).v){
 		myAvl->fg = insertionAVL(myAvl->fg, e, h);
@@ -111,9 +111,9 @@ pAvl insertionAVL(pAvl myAvl, camion e, int* h){
 		return myAvl;
 	}
 	if(*h != 0){
-		myAvl->equilibre += *h;
-		myAvl = equilibrerAVL(myAvl);
-		if(myAvl->equilibre == 0){
+		myAvl->balance += *h;
+		myAvl = balanceAVL(myAvl);
+		if(myAvl->balance == 0){
 			*h = 0;
 		}
 		else{
@@ -124,7 +124,7 @@ pAvl insertionAVL(pAvl myAvl, camion e, int* h){
 }
 
 
-int compareChaines(char *chaine1, char *chaine2){
+int compareString(char *chaine1, char *chaine2){
     while (*chaine1 != '\0' || *chaine2 != '\0'){
         // Si l'un des caractères est ' ', on le traite comme le plus grand
         char c1 = (*chaine1 == ' ') ? 127 : *chaine1;
@@ -153,26 +153,26 @@ int compareChaines(char *chaine1, char *chaine2){
 }
 
 
-void parcoursInfixeInverse(pAvl a, int* compt, camion tab[]){
+void InfixeReverse(pAvl a, int* compt, truck tab[]){
 	if(a!=NULL && *compt < 10){
-		parcoursInfixeInverse(a->fd, compt, tab);
+		InfixeReverse(a->fd, compt, tab);
 		if(*compt < 10){
 			int b = *compt;
 			tab[b] = a->val;
 			(*compt)++;
 		}
-		parcoursInfixeInverse(a->fg, compt, tab);
+		InfixeReverse(a->fg, compt, tab);
 	}
 }
 
 
-pAvl insertionAVL3(pAvl myAvl, camion e, int* h){
+pAvl insertionAVL3(pAvl myAvl, truck e, int* h){
 	if(myAvl == NULL){
 		*h=1;
-		return creerArbre(e);
+		return createAVL(e);
 	}
 	else{
-		int comparison = compareChaines(e.v3, (myAvl->val).v3);
+		int comparison = compareString(e.v3, (myAvl->val).v3);
 		if(comparison < 0){
 			myAvl->fg = insertionAVL3(myAvl->fg, e, h);
 			*h = -*h;
@@ -186,9 +186,9 @@ pAvl insertionAVL3(pAvl myAvl, camion e, int* h){
 		}
 	}
 	if(*h != 0){
-		myAvl->equilibre += *h;
-		myAvl = equilibrerAVL(myAvl);
-		if(myAvl->equilibre == 0){
+		myAvl->balance += *h;
+		myAvl = balanceAVL(myAvl);
+		if(myAvl->balance == 0){
 			*h = 0;
 		}
 		else{
@@ -198,27 +198,27 @@ pAvl insertionAVL3(pAvl myAvl, camion e, int* h){
 	return myAvl;
 }
 
-void parcoursInfixe(pAvl a){
+void Infixe(pAvl a){
 	if(a!=NULL){
-		parcoursInfixe(a->fg);
+		Infixe(a->fg);
 		//La ça va print nom_de_la_ville;distance
 		printf("%s;%d;%d\n", (a->val).v3, (a->val).v, (a->val).v2);
-		parcoursInfixe(a->fd);
+		Infixe(a->fd);
 	}
 }
 
-void parcoursInfixeInverse2(pAvl a){
+void InfixeReverse2(pAvl a){
 	if(a!=NULL){
-		parcoursInfixeInverse2(a->fd);
+		InfixeReverse2(a->fd);
 		printf("%d;%.3f;%.3f;%.3f,%.3f\n", (a->val).v2, (a->val).v4, (a->val).v5, (a->val).v6, (a->val).v7);
-		parcoursInfixeInverse2(a->fg);
+		InfixeReverse2(a->fg);
 	}
 }
 
-pAvl insertionAVL2(pAvl myAvl, camion e, int* h){
+pAvl insertionAVL2(pAvl myAvl, truck e, int* h){
 	if(myAvl == NULL){
 		*h=1;
-		return creerArbre(e);
+		return createAVL(e);
 	}
 	else if(e.v7 < (myAvl->val).v7){
 		myAvl->fg = insertionAVL2(myAvl->fg, e, h);
@@ -232,9 +232,9 @@ pAvl insertionAVL2(pAvl myAvl, camion e, int* h){
 		return myAvl;
 	}
 	if(*h != 0){
-		myAvl->equilibre += *h;
-		myAvl = equilibrerAVL(myAvl);
-		if(myAvl->equilibre == 0){
+		myAvl->balance += *h;
+		myAvl = balanceAVL(myAvl);
+		if(myAvl->balance == 0){
 			*h = 0;
 		}
 		else{
@@ -242,4 +242,16 @@ pAvl insertionAVL2(pAvl myAvl, camion e, int* h){
 		}
 	}
 	return myAvl;
+}
+
+
+//function to free the AVL allocation's memory
+void freeAvl(pAvl a){
+	if(a != NULL){
+		freeAvl(a->fg);
+		freeAvl(a->fd);
+		//free(a->cam.v3);
+		
+		free(a);
+	}
 }
