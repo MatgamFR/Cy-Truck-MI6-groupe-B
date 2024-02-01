@@ -17,7 +17,7 @@ Il faudra bien sûr remplacer cmd par le nom du traitement. Les différents diff
 
 * -s : Affiche un histogramme avec la distance minimale, maximale et moyenne des étapes pour les 50 trajets qui ont le plus grand écart dans la distance de leurs étapes, triés par ordre décroissant
 
-Il est évidemment possible d'éxécuter plusieurs traitement tel que bash main.sh data.csv -d1 -d2 -l
+Il est évidemment possible d'éxécuter plusieurs traitement tel que : bash main.sh data.csv -d1 -d2 -l
 
 Vous pouvez également saisir la commande -h  qui explique les différents traitement en anglais.
 Les résultats après excécution du programme seront dans "images", mais vous pouvez visualiser les histogrammes sans l'éxecution du programme nécesssaire dans le dossier "démo".
