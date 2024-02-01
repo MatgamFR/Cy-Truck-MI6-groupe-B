@@ -1,8 +1,11 @@
 #!/bin/bash
 
 #copy data.csv n move it to data's folder
-script_dir=$(dirname "$(readlink -f "$0")")
-cp "$script_dir/$1" "$script_dir/data/"
+if [ ! -f data/$1 ]
+then
+	script_dir=$(dirname "$(readlink -f "$0")")
+	cp "$script_dir/$1" "$script_dir/data/"
+fi
 
 #with and height terminal
 width=$(tput cols)
@@ -151,8 +154,8 @@ then
     echo -e "    '-'                '-'  '-'                       '-'  '-'${enDefault}"
     echo
     #displaying all the information for the various arguments
-    	echo "the first argument needs to be the file, then you can put every other arguments in any order you want"
-     	echo "example of a usage  of main.sh : bash main.sh data.csv -d1 -s"
+    echo "the first argument needs to be the file, then you can put every other arguments in any order you want"
+    echo "example of a usage  of main.sh : bash main.sh data.csv -d1 -s"
 	echo "-h | displays help menu, when -h is an argument, ignores all the other options"
 	echo "-d1 | creates a graph with the 10 drivers who have made the most trips, sorted by descending order"
 	echo "-d2 | creates a graph with the 10 drivers who traveled the longest distance, sorted by descending order"
