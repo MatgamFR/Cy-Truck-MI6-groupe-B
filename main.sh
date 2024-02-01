@@ -340,20 +340,20 @@ END {
     for (i in count) {
         printf("%s;%d;%d\n", i, count[i], count2[i]);
     }
-}' $1 > temp/temps.data
+}' $1 > temp/tempt.data
 	
-	#counting the number of lines in temp/temps.data to do the for loop in the c program
-	a=`cat temp/temps.data | wc -l`
+	#counting the number of lines in temp/tempt.data to do the for loop in the c program
+	a=`cat temp/tempt.data | wc -l`
 	
 	#cuts to separate column 1 and 2 in different files
-	cut -d';' -f1 temp/temps.data > temp/temps2.data
-	cut -d';' -f2 temp/temps.data > temp/temps3.data
-	cut -d';' -f3 temp/temps.data > temp/temps4.data
+	cut -d';' -f1 temp/tempt.data > temp/tempt2.data
+	cut -d';' -f2 temp/tempt.data > temp/tempt3.data
+	cut -d';' -f3 temp/tempt.data > temp/tempt4.data
 	
 	
 	
-	#We launch the program with the number of lines in the file as an argument and the program outputs go to temp/tempsfini.data
-	./progc/cy_truck $a | head -10 > temp/tempsfini.data
+	#We launch the program with the number of lines in the file as an argument and the program outputs go to temp/temptfini.data
+	./progc/cy_truck $a | head -10 > temp/temptfini.data
 
  	#creating the graph with gnuplot
 	gnuplot <<-EOF
@@ -376,7 +376,7 @@ END {
 	set size square
 	set boxwidth 2
 	
-	plot "temp/tempsfini.data" using 2:xtic(1) notitle lc rgb "blue", '' using 3:xtic(1) lc rgb "green" notitle
+	plot "temp/temptfini.data" using 2:xtic(1) notitle lc rgb "blue", '' using 3:xtic(1) lc rgb "green" notitle
 	EOF
 	
 	xdg-open images/t.png
@@ -405,8 +405,8 @@ then
 	b=`cat $1 | grep ";1;" | awk -F';' '{if($1 >= max){max = $1}} END {print max}'`
 	
 	
-	#We launch the program with the number of lines in the file as argument 1 and the number of id as argument 2, it will take the first 50 lines, add a number ahead each line and the program outputs go to temp/temptfini.data
-	./progc/cy_truck $a $b | head -50 | awk -W sprintf=num '{x++; printf("%d;%s\n", x, $1)}' > temp/temptfini.data
+	#We launch the program with the number of lines in the file as argument 1 and the number of id as argument 2, it will take the first 50 lines, add a number ahead each line and the program outputs go to temp/tempsfini.data
+	./progc/cy_truck $a $b | head -50 | awk -W sprintf=num '{x++; printf("%d;%s\n", x, $1)}' > temp/tempsfini.data
 	
 	gnuplot <<-EOF
 	set terminal png font "Arial,6"
@@ -421,7 +421,7 @@ then
 	set xlabel "Route ID"
 	set ylabel "Distance (Km)" rotate by -270
 	
-	plot "temp/temptfini.data" using 1:3:5:xtic(2) with filledcurves below title "Distance Max/Min (Km)" lc rgb "blue", '' u 1:4 lc rgb "blue" title "Distance Average (Km)"
+	plot "temp/tempsfini.data" using 1:3:5:xtic(2) with filledcurves below title "Distance Max/Min (Km)" lc rgb "blue", '' u 1:4 lc rgb "blue" title "Distance Average (Km)"
 	EOF
 	
 	xdg-open images/s.png
