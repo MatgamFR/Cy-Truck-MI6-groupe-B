@@ -151,7 +151,9 @@ then
     echo -e "    '-'                '-'  '-'                       '-'  '-'${enDefault}"
     echo
     #displaying all the information for the various arguments
-	echo "-h | displays help menu"
+    	echo "the first argument needs to be the file, then you can put every other arguments in any order you want"
+     	echo "example of a usage  of main.sh : bash main.sh data.csv -d1 -s"
+	echo "-h | displays help menu, when -h is an argument, ignores all the other options"
 	echo "-d1 | creates a graph with the 10 drivers who have made the most trips, sorted by descending order"
 	echo "-d2 | creates a graph with the 10 drivers who traveled the longest distance, sorted by descending order"
 	echo "-l | creates a graph with the 10 longest trips, sorted by ascending trip ID number"
