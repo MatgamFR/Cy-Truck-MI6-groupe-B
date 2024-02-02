@@ -1,5 +1,6 @@
 #include "truck.h"
 
+//Function to create an avl
 pAvl createAVL(truck num){
     pAvl myAvl=(pAvl)malloc(sizeof(Avl));
 
@@ -16,7 +17,7 @@ pAvl createAVL(truck num){
     return myAvl;
 }
 
-
+//Function to do a rotation left
 pAvl rotationLeft(pAvl myAvl){
 
     pAvl bivot;
@@ -37,6 +38,7 @@ pAvl rotationLeft(pAvl myAvl){
     return myAvl;
 }
 
+//Function to do a rotation right
 pAvl rotationRight(pAvl myAvl){
 
     pAvl bivot;
@@ -57,7 +59,7 @@ pAvl rotationRight(pAvl myAvl){
     return myAvl;
 }
 
-
+//Function to do a double rotation left
 pAvl doubleRotationLeft(pAvl myAvl){
     pAvl bivot;
     myAvl->fd=rotationRight(myAvl->fd);
@@ -65,6 +67,7 @@ pAvl doubleRotationLeft(pAvl myAvl){
     return rotationLeft(myAvl);
 }
 
+//Function to do a double rotation right
 pAvl doubleRotationRight(pAvl myAvl){
     pAvl bivot;
     myAvl->fg=rotationLeft(myAvl->fg);
@@ -72,7 +75,7 @@ pAvl doubleRotationRight(pAvl myAvl){
     return rotationRight(myAvl);
 }
 
-
+//function to balance the AVL
 pAvl balanceAVL(pAvl myAvl){
     if(myAvl->balance >=2 ){
         if(myAvl->fd->balance >= 0){
@@ -93,7 +96,7 @@ pAvl balanceAVL(pAvl myAvl){
     return myAvl;
 }
 
-
+//Function to insert into the AVL
 pAvl insertionAVL(pAvl myAvl, truck e, int* h){
 	if(myAvl == NULL){
 		*h=1;
@@ -123,37 +126,38 @@ pAvl insertionAVL(pAvl myAvl, truck e, int* h){
 	return myAvl;
 }
 
-
-int compareString(char *chaine1, char *chaine2){
+//Function to compare 2 string, return 1 if c1 > c2 and -1 if c1 < c2
+int compareString(char *string1, char *string2){
     while (*chaine1 != '\0' || *chaine2 != '\0'){
-        // Si l'un des caractères est ' ', on le traite comme le plus grand
-        char c1 = (*chaine1 == ' ') ? 127 : *chaine1;
-        char c2 = (*chaine2 == ' ') ? 127 : *chaine2;
+        //If one of the characters is ' ', it is treated as the largest one
+        char c1 = (*string1 == ' ') ? 127 : *string1;
+        char c2 = (*string2 == ' ') ? 127 : *string2;
 
         if (c1 < c2) {
-            return -1; // Chaine1 est devant
+            return -1; //string1 is ahead
         } else if (c1 > c2) {
-            return 1; // Chaine2 est devant
+            return 1; //string2 is ahead
         }
 
-        // Passer au caractère suivant dans les deux chaînes
-        chaine1++;
-        chaine2++;
+        //Pass to the next character in both strings
+        string1++;
+        string2++;
     }
     
-     // Les chaînes sont identiques jusqu'à présent, mais une peut être plus courte
-    if (*chaine1 == '\0' && *chaine2 != '\0') {
-        return -1; // Chaine1 est devant
-    } else if (*chaine1 != '\0' && *chaine2 == '\0') {
-        return 1; // Chaine2 est devant
+     //Chains are identical up to now, but one may be shorter
+    if (*string1 == '\0' && *string2 != '\0') {
+        return -1; //string1 is ahead
+    } else if (*string1 != '\0' && *string2 == '\0') {
+        return 1; //string2 is ahead
     }
 
-    // Les chaînes sont identiques
+    //Strings are identical
     return 0;
 }
 
-
+//Function for reversed infix path
 void InfixeReverse(pAvl a, int* compt, truck tab[]){
+	//End when compt is == 10
 	if(a!=NULL && *compt < 10){
 		InfixeReverse(a->fd, compt, tab);
 		if(*compt < 10){
@@ -165,7 +169,7 @@ void InfixeReverse(pAvl a, int* compt, truck tab[]){
 	}
 }
 
-
+//Function to insert into the AVL
 pAvl insertionAVL3(pAvl myAvl, truck e, int* h){
 	if(myAvl == NULL){
 		*h=1;
@@ -198,15 +202,17 @@ pAvl insertionAVL3(pAvl myAvl, truck e, int* h){
 	return myAvl;
 }
 
+//Function for infix path
 void Infixe(pAvl a){
 	if(a!=NULL){
 		Infixe(a->fg);
-		//La ça va print nom_de_la_ville;distance
 		printf("%s;%d;%d\n", (a->val).v3, (a->val).v, (a->val).v2);
 		Infixe(a->fd);
 	}
 }
 
+
+//Function for reversed infix path
 void InfixeReverse2(pAvl a){
 	if(a!=NULL){
 		InfixeReverse2(a->fd);
@@ -215,6 +221,7 @@ void InfixeReverse2(pAvl a){
 	}
 }
 
+//Function to insert into the AVL
 pAvl insertionAVL2(pAvl myAvl, truck e, int* h){
 	if(myAvl == NULL){
 		*h=1;
