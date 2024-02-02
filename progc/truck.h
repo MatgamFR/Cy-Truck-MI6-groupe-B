@@ -4,6 +4,7 @@
 #define min(i, j) (((i) < (j)) ? (i) : (j))
 #define max(i, j) (((i) > (j)) ? (i) : (j))
 
+//Struct to contain informations
 typedef struct Truck{
 	int v;
 	int v2;
@@ -14,6 +15,7 @@ typedef struct Truck{
 	float v7;
 } truck;
 
+//Struct to Avl
 typedef struct Avl{
     truck val;
     int balance;
@@ -21,6 +23,7 @@ typedef struct Avl{
     struct Avl* fd;
 }Avl,*pAvl;
 
+//Struct for the traitement s
 typedef struct Town{
 	float max;
 	float min;
@@ -28,6 +31,7 @@ typedef struct Town{
 	int compt;
 } town;
 
+//Initialisation of function
 pAvl createAVL(truck num);
 pAvl rotationLeft(pAvl myAvl);
 pAvl rotationRight(pAvl myAvl);

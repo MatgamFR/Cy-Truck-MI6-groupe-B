@@ -2,13 +2,14 @@
 
 void traitement_s(int nbline, int a){
 	FILE * file = fopen("temp/temps.data", "r");
-	//FILE * file2 = fopen("temp/tempt2.data", "w+");
 	
 	int d;
 	float f;
 	
+	//Creating a dynamic table
 	town * tab = malloc(sizeof(town)*a);
 	
+	//Fill the table with town struct with all element 0
 	for(int i=0; i<a; i++){
 		town t;
 		t.max = 0;
@@ -18,6 +19,7 @@ void traitement_s(int nbline, int a){
 		tab[i] = t;
 	}
 	
+	//loop for to going through every singles lines of the different files
 	for(int i=0; i<nbline; i++){
 		fscanf(file, "%d;%f", &d, &f);
 		
@@ -31,6 +33,7 @@ void traitement_s(int nbline, int a){
 		((tab[d-1]).compt)++;
 	}
 	
+	//Insert into cam the value
 	truck cam;
 	
 	cam.v7 = (tab[0]).max - (tab[0]).min;
@@ -41,6 +44,7 @@ void traitement_s(int nbline, int a){
 	
 	pAvl ab=createAVL(cam);
 	
+	//loop which will insert all the cams into the tree
 	for(int i=1; i<a; i++){
 		int h=0;
 	
@@ -53,10 +57,9 @@ void traitement_s(int nbline, int a){
 		cam.v6 = (tab[i]).max;
 		
 		insertionAVL2(ab, cam, &h);
-	
-		//fprintf(file2, "%d;%.3f;%.3f;%.3f,%.3f\n", i+1, (tab[i]).min, (tab[i]).moy / (tab[i]).compt, (tab[i]).max, (tab[i]).max - (tab[i]).min);
 	}
 	
+	//we are going through the tree by the reverse infix method
 	InfixeReverse2(ab);
 	
 	fclose(file);
