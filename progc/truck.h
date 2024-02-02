@@ -45,6 +45,6 @@ void Infixe(pAvl a);
 
 void traitement_s(int nbligne, int a);
 
-int compareString(char *chaine1, char *chaine2);
+int compareString(char *string1, char *string2);
 
 void freeAvl(pAvl a);
