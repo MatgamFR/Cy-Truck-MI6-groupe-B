@@ -3,19 +3,19 @@
 int main(int arg, char** argv){
 	if(arg==2){
 		//It's taking the temp/temps2.data and temp/temps3.data files n we r giving them the read mode, then we save them as file and file2
-		FILE * file = fopen("temp/temps2.data", "r");
+		FILE * file = fopen("temp/tempt2.data", "r");
 		if(file == NULL){
-			printf("the file temp/temps2.data cannot be opened");
+			printf("the file temp/tempt2.data cannot be opened");
 			exit(01);
 		}
-		FILE * file2 = fopen("temp/temps3.data", "r");
+		FILE * file2 = fopen("temp/tempt3.data", "r");
 		if(file2 == NULL){
-			printf("the file temp/temps3.data cannot be opened");
+			printf("the file temp/tempt3.data cannot be opened");
 			exit(02);
 		}
-		FILE * file3 = fopen("temp/temps4.data", "r");
+		FILE * file3 = fopen("temp/tempt4.data", "r");
 		if(file3 == NULL){
-			printf("the file temp/temps4.data cannot be opened");
+			printf("the file temp/tempt4.data cannot be opened");
 			exit(03);
 		}
 		

@@ -1,7 +1,7 @@
 #include "truck.h"
 
 void traitement_s(int nbline, int a){
-	FILE * file = fopen("temp/tempt.data", "r");
+	FILE * file = fopen("temp/temps.data", "r");
 	//FILE * file2 = fopen("temp/tempt2.data", "w+");
 	
 	int d;

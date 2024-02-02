@@ -128,7 +128,7 @@ pAvl insertionAVL(pAvl myAvl, truck e, int* h){
 
 //Function to compare 2 string, return 1 if c1 > c2 and -1 if c1 < c2
 int compareString(char *string1, char *string2){
-    while (*chaine1 != '\0' || *chaine2 != '\0'){
+    while (*string1 != '\0' || *string2 != '\0'){
         //If one of the characters is ' ', it is treated as the largest one
         char c1 = (*string1 == ' ') ? 127 : *string1;
         char c2 = (*string2 == ' ') ? 127 : *string2;
