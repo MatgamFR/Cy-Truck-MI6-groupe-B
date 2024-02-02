@@ -398,9 +398,9 @@ then
 	#count time & +%s.%N allow to display decimals
 	beginning=$(date +%s.%N)
 
-	cut -d';' -f1,5 $1 | tail -n +2 > temp/tempt.data
+	cut -d';' -f1,5 $1 | tail -n +2 > temp/temps.data
 	#counting the number of lines in temp/temps.data to do the for loop in the c program
-	a=`cat temp/tempt.data | wc -l`
+	a=`cat temp/temps.data | wc -l`
 	#b count the number of different id in $1
 	b=`cat $1 | grep ";1;" | awk -F';' '{if($1 >= max){max = $1}} END {print max}'`
 	
